@@ -1,7 +1,10 @@
 //Core
 import React, { Component } from "react";
 import * as THREE from 'three';
+import * as dat from 'dat.gui';
+
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
 
 //Shaders
 import backgroundVertexShader from './shaders/background/vertex.glsl';
@@ -16,6 +19,10 @@ export default class ThreeScene extends Component{
  */
         const textureLoader = new THREE.TextureLoader();
 
+/**
+ * GUI
+ */
+        const gui = new dat.GUI();
 /**
  * Renderer
  */
@@ -69,17 +76,23 @@ export default class ThreeScene extends Component{
         
         window.addEventListener('resize', () => {
             // Update sizes
-            sizes.width = window.innerWidth
-            sizes.height = window.innerHeight
+            sizes.width = window.innerWidth;
+            sizes.height = window.innerHeight;
 
             // Update camera
-            camera.aspect = sizes.width / sizes.height
-            camera.updateProjectionMatrix()
+            camera.aspect = sizes.width / sizes.height;
+            camera.updateProjectionMatrix();
 
             // Update renderer
-            renderer.setSize(sizes.width, sizes.height)
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+            renderer.setSize(sizes.width, sizes.height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         });
+        
+/**
+* Geometry
+* */
+                const backgroundGeometry = new THREE.PlaneGeometry(10, 10, 100, 100);
+                console.log(backgroundGeometry);
 
 /**
  * Materials
@@ -88,24 +101,16 @@ export default class ThreeScene extends Component{
             vertexShader: backgroundVertexShader,
             fragmentShader: backgroundFragmentShader,
             uniforms: {
-                uWaveAmplitude: {value: 5},
+                uWaveAmplitude: {value: 0.5},
                 uWaveDampening: {value: 0.1},
                 uRaycastIntersect: {value: new THREE.Vector2(0, 0)},
                 uElapsedTime: {value: 0},
             }
-            }
-        )
-
-        console.log(backgroundMaterial);
-/**
- * Geometry
- */
-        const backgroundGeometry = new THREE.PlaneGeometry(10, 10, 100, 100);
-        console.log(backgroundGeometry);
+        });
+        
 /**
  * Mesh
  */
-
         const background = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
         background.uniforms = {
             uInteractable: {value: true},
@@ -128,11 +133,17 @@ export default class ThreeScene extends Component{
             
             if(intersects.length){
                 for(const collision of intersects){
+                    console.log(collision);
                     if (collision.object.uniforms !== undefined && collision.object.uniforms.uInteractable){
                     collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
+
+                    if(elapsedTime % 10 == 0){
+                        
+                    }
                     }
                 }
             }
+            
             
             
             renderer.render(scene, camera);
