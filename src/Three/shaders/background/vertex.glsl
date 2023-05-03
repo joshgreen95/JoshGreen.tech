@@ -13,6 +13,18 @@ varying float vElevation;
 
 const float PI = 3.14159265;
 
+vec2 SquareVec2(vec2 originalVec2){
+    float squaredX = originalVec2.x * originalVec2.x;
+    float squaredY = originalVec2.y * originalVec2.y;
+    vec2 squaredVec2 = vec2(squaredX, squaredY);
+    return squaredVec2; 
+}
+
+float GenerateFloat(float amplitude ){
+    return 0.4;
+}
+
+
 void main(){
     //Assign varyings from uniforms for fragment shader
     vRaycastIntersect = uRaycastIntersect;
@@ -31,10 +43,12 @@ void main(){
         increase wave dampening and decrease amplitude over time 
 
     */
-    vec2 distanceFromIntersect = vec2(distance(uRaycastIntersect.x, uv.x) * 10.0, distance(1.0 - uRaycastIntersect.y, uv.y) * 10.0);
-    float sumDistanceSquare = ((distanceFromIntersect.x * distanceFromIntersect.x) + (distanceFromIntersect.y * distanceFromIntersect.y));
 
-    float height =  1.0 - uWaveAmplitude * cos(sumDistanceSquare) * exp(-uWaveDampening * ( sumDistanceSquare));
+    vec2 distanceFromIntersect = vec2(distance(uRaycastIntersect.x, uv.x) * 10.0, distance(1.0 - uRaycastIntersect.y, uv.y) * 10.0);
+    vec2 squaredDistance = SquareVec2(distanceFromIntersect);
+    float sumSquaredDistance = squaredDistance.x + squaredDistance.y;
+
+    float height =  1.0 - uWaveAmplitude * cos(sumSquaredDistance) * exp(-uWaveDampening *(sumSquaredDistance));
 
     //Add height to z coordinate
     modelPosition.y += height;

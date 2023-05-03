@@ -8,6 +8,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 //Shaders
 import backgroundVertexShader from './shaders/background/vertex.glsl';
+import backgroundTestVertexShader from './shaders/background/testvertex.glsl';
 import backgroundFragmentShader from './shaders/background/fragment.glsl';
 
 
@@ -19,6 +20,10 @@ export default class ThreeScene extends Component{
  */
         const textureLoader = new THREE.TextureLoader();
 
+/**
+ *      Textures 
+ */
+        const carpetTexture = textureLoader.load('/textures/carpet.jpg');
 /**
  * GUI
  */
@@ -101,13 +106,25 @@ export default class ThreeScene extends Component{
             vertexShader: backgroundVertexShader,
             fragmentShader: backgroundFragmentShader,
             uniforms: {
-                uWaveAmplitude: {value: 0.5},
-                uWaveDampening: {value: 0.1},
+                uWaveAmplitude: {value: 1},
+                uWaveDampening: {value: 0.2},
                 uRaycastIntersect: {value: new THREE.Vector2(0, 0)},
-                uElapsedTime: {value: 0},
+                uElapsedTime: {value: 0.0},
+                uTexture: {value: carpetTexture},
             }
         });
-        
+
+        const backgroundTestMaterial = new THREE.ShaderMaterial({
+            vertexShader: backgroundTestVertexShader,
+            fragmentShader: backgroundFragmentShader,
+            uniforms: {
+                uWaveAmplitude: { value: 0.5 },
+                uWaveDampening: { value: 0.1 },
+                uRaycastIntersect: { value: new THREE.Vector2(0, 0) },
+                uElapsedTime: { value: 0.0 },
+            }
+        });
+   
 /**
  * Mesh
  */
@@ -125,7 +142,7 @@ export default class ThreeScene extends Component{
         function tick() {
             requestAnimationFrame(tick);
             const elapsedTime = clock.getElapsedTime();
-            backgroundMaterial.uniforms.uElapsedTime.value = elapsedTime;
+            //backgroundMaterial.uniforms.uElapsedTime.value = elapsedTime;
 
             //Raycaster
             raycaster.setFromCamera(pointer, camera);
@@ -134,12 +151,13 @@ export default class ThreeScene extends Component{
             if(intersects.length){
                 for(const collision of intersects){
                     console.log(collision);
-                    if (collision.object.uniforms !== undefined && collision.object.uniforms.uInteractable){
+                    //if (collision.object.mesh !== undefined && collision.object.uniforms.uInteractable.value){
+
                     collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
 
                     if(elapsedTime % 10 == 0){
                         
-                    }
+                    //}
                     }
                 }
             }
