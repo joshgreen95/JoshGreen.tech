@@ -139,8 +139,14 @@ export default class ThreeScene extends Component{
 
         const clock = new THREE.Clock();
 
-        function tick() {
-            requestAnimationFrame(tick);
+        function UpdateWaveShader(){
+            let timeSinceLastMouseMovement;
+        }
+        
+        
+        
+        function Tick() {
+            requestAnimationFrame(Tick);
             const elapsedTime = clock.getElapsedTime();
             //backgroundMaterial.uniforms.uElapsedTime.value = elapsedTime;
 
@@ -167,7 +173,7 @@ export default class ThreeScene extends Component{
             renderer.render(scene, camera);
         }
 
-        tick();
+        Tick();
 
         window.addEventListener('pointermove', OnPointerMove);
     }
@@ -184,3 +190,5 @@ export default class ThreeScene extends Component{
         );
     }
 }
+
+
