@@ -5,6 +5,8 @@ import * as dat from 'dat.gui';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+//Loaders
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 //Shaders
 import backgroundVertexShader from './shaders/background/vertex.glsl';
@@ -19,11 +21,9 @@ export default class ThreeScene extends Component{
  * Loaders
  */
         const textureLoader = new THREE.TextureLoader();
+        const gltLoader = new GLTFLoader();
 
-/**
- *      Textures 
- */
-        const carpetTexture = textureLoader.load('/textures/carpet.jpg');
+
 /**
  * GUI
  */
@@ -94,6 +94,22 @@ export default class ThreeScene extends Component{
         });
         
 /**
+ * Models
+ */
+        
+        gltLoader.load('/models/Scene.glb', (model) => {    
+        scene.add(model.scene);
+
+        }, 
+        (progress) => {}, 
+        (error) => {
+            throw new Error(error);
+        });
+/**
+ * Textures 
+ */
+        const carpetTexture = textureLoader.load('/textures/carpet.jpg');
+/**
 * Geometry
 * */
                 const backgroundGeometry = new THREE.PlaneGeometry(10, 10, 100, 100);
@@ -144,7 +160,11 @@ export default class ThreeScene extends Component{
         }
         
         
-        
+/**
+ * Lights
+ */
+        scene.add(new THREE.AmbientLight(0x404040, 100) );
+
         function Tick() {
             requestAnimationFrame(Tick);
             const elapsedTime = clock.getElapsedTime();
@@ -156,7 +176,6 @@ export default class ThreeScene extends Component{
             
             if(intersects.length){
                 for(const collision of intersects){
-                    console.log(collision);
                     //if (collision.object.mesh !== undefined && collision.object.uniforms.uInteractable.value){
 
                     collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
