@@ -2,14 +2,14 @@ uniform float uWaveAmplitude;
 uniform float uWaveDampening;
 
 uniform float uElapsedTime;
-uniform vec2 geometrySize;  
 
 uniform vec2 uRaycastIntersect;
+
+
 
 varying vec2 vRaycastIntersect;
 varying vec2 vUv;
 varying float vElapsedTime;
-varying float vElevation;
 
 const float PI = 3.14159265;
 
@@ -34,9 +34,6 @@ void main(){
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
 
     /*
-    Calculate depreciating 3d sine wave from x y coordinates.
-    Distance from uv coordinate of vertex and uv coordinate of raycast intersect 
-
         TODO:
         Impliment way to find size of mesh from UNIFORMS
         add time variable

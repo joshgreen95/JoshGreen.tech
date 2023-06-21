@@ -13,7 +13,9 @@ import backgroundVertexShader from './shaders/background/vertex.glsl';
 import backgroundTestVertexShader from './shaders/background/testvertex.glsl';
 import backgroundFragmentShader from './shaders/background/fragment.glsl';
 
-
+//Functions
+import Calculate2DBounds from './CalculateBounds.js'
+import AssignTagsToScene from "./AssignTagsToScene";
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -51,6 +53,12 @@ export default class ThreeScene extends Component{
         camera.position.z = 8;
         camera.position.y = 8;
 
+
+/**
+ * Axis Helper
+ */
+        const axesHelper = new THREE.AxesHelper(5);
+        scene.add(axesHelper);
 
 /**
  * Controls
@@ -96,10 +104,22 @@ export default class ThreeScene extends Component{
 /**
  * Models
  */
-        
-        gltLoader.load('/models/Scene.glb', (model) => {    
-        scene.add(model.scene);
+        //Bath
+        let bathTub2DBounds = null;
 
+        gltLoader.load('/models/Bath.glb', (model) => {    
+            console.log(model);
+            
+            AssignTagsToScene(model.scene, 'needsUVCoords', false);
+            
+            console.log(model);
+            scene.add(model.scene);
+        
+            const bathTub = model.scene.children[0];
+            bathTub2DBounds = Calculate2DBounds(bathTub);
+
+            console.log(bathTub2DBounds)
+            bathWater.scale.set((bathTub2DBounds[0] - bathTub2DBounds[1]) * 0.9 , bathTub2DBounds[0]* 0.9, 0);
         }, 
         (progress) => {}, 
         (error) => {
@@ -112,13 +132,13 @@ export default class ThreeScene extends Component{
 /**
 * Geometry
 * */
-                const backgroundGeometry = new THREE.PlaneGeometry(10, 10, 100, 100);
-                console.log(backgroundGeometry);
+        const bathWaterGeometry = new THREE.PlaneGeometry(1, 1, 100, 100);
+        console.log(bathWaterGeometry);
 
 /**
  * Materials
  */     
-        const backgroundMaterial = new THREE.ShaderMaterial({
+        const bathWaterMaterial = new THREE.ShaderMaterial({
             vertexShader: backgroundVertexShader,
             fragmentShader: backgroundFragmentShader,
             uniforms: {
@@ -129,36 +149,19 @@ export default class ThreeScene extends Component{
                 uTexture: {value: carpetTexture},
             }
         });
-
-        const backgroundTestMaterial = new THREE.ShaderMaterial({
-            vertexShader: backgroundTestVertexShader,
-            fragmentShader: backgroundFragmentShader,
-            uniforms: {
-                uWaveAmplitude: { value: 0.5 },
-                uWaveDampening: { value: 0.1 },
-                uRaycastIntersect: { value: new THREE.Vector2(0, 0) },
-                uElapsedTime: { value: 0.0 },
-            }
-        });
-   
 /**
  * Mesh
  */
-        const background = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
-        background.uniforms = {
-            uInteractable: {value: true},
-        }
-        
-        background.rotateX(- 0.5 * Math.PI);
-        
-        scene.add(background);
+        const bathWater = new THREE.Mesh(bathWaterGeometry, bathWaterMaterial);
+        bathWater.tags['needsUVCoords'] = true;
 
+        bathWater.rotateX(- 0.5 * Math.PI);
+        bathWater.position.y -= 0.1
+        
+        scene.add(bathWater);
+
+        
         const clock = new THREE.Clock();
-
-        function UpdateWaveShader(){
-            let timeSinceLastMouseMovement;
-        }
-        
         
 /**
  * Lights
@@ -176,16 +179,11 @@ export default class ThreeScene extends Component{
             
             if(intersects.length){
                 for(const collision of intersects){
-                    //if (collision.object.mesh !== undefined && collision.object.uniforms.uInteractable.value){
-
-                    collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
-
-                    if(elapsedTime % 10 == 0){
-                        
-                    //}
-                    }
+                    if(!collision['needsUVCoords']) {return ;}
+                    console.log(collision);
+                     }
                 }
-            }
+            
             
             
             
