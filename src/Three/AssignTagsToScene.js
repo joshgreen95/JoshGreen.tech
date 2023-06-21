@@ -1,14 +1,18 @@
-//FIX
-export default function AssignTagsToScene(scene, tag, val){
-    
-    scene.forEach((child) => {
+import { tags } from "./Tags";
+
+export function InitializeTags(scene){
+        tags.forEach((tag) => {
+            AssignTagToScene(scene, tag, false);
+        })
+}
+
+export function AssignTagToScene(scene, tag, val){
+    scene.children.forEach((child) => {
         if (child.children.length > 0) {
-            AssignTagsToScene(scene, tag, val);
-            return;
-        }
-        console.log(child);
-        if(!('tags' in child)){
-            console.log(('tags' in child))
+            AssignTagToScene(child, tag, val);
+        } 
+
+        if(child && !('tags' in child)){
             child['tags'] = {}
         }
 

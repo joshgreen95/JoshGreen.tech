@@ -10,12 +10,11 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 //Shaders
 import backgroundVertexShader from './shaders/background/vertex.glsl';
-import backgroundTestVertexShader from './shaders/background/testvertex.glsl';
 import backgroundFragmentShader from './shaders/background/fragment.glsl';
 
 //Functions
 import Calculate2DBounds from './CalculateBounds.js'
-import AssignTagsToScene from "./AssignTagsToScene";
+import { InitializeTags } from "./AssignTagsToScene";
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -110,7 +109,7 @@ export default class ThreeScene extends Component{
         gltLoader.load('/models/Bath.glb', (model) => {    
             console.log(model);
             
-            AssignTagsToScene(model.scene, 'needsUVCoords', false);
+            InitializeTags(model.scene, 'needsUVCoords', false);
             
             console.log(model);
             scene.add(model.scene);
@@ -118,7 +117,6 @@ export default class ThreeScene extends Component{
             const bathTub = model.scene.children[0];
             bathTub2DBounds = Calculate2DBounds(bathTub);
 
-            console.log(bathTub2DBounds)
             bathWater.scale.set((bathTub2DBounds[0] - bathTub2DBounds[1]) * 0.9 , bathTub2DBounds[0]* 0.9, 0);
         }, 
         (progress) => {}, 
@@ -153,7 +151,9 @@ export default class ThreeScene extends Component{
  * Mesh
  */
         const bathWater = new THREE.Mesh(bathWaterGeometry, bathWaterMaterial);
+        bathWater.tags = {};
         bathWater.tags['needsUVCoords'] = true;
+
 
         bathWater.rotateX(- 0.5 * Math.PI);
         bathWater.position.y -= 0.1
@@ -166,7 +166,7 @@ export default class ThreeScene extends Component{
 /**
  * Lights
  */
-        scene.add(new THREE.AmbientLight(0x404040, 100) );
+        scene.add(new THREE.AmbientLight(0x404040, 1) );
 
         function Tick() {
             requestAnimationFrame(Tick);
