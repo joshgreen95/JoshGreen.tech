@@ -13,8 +13,9 @@ import backgroundVertexShader from './shaders/background/vertex.glsl';
 import backgroundFragmentShader from './shaders/background/fragment.glsl';
 
 //Functions
-import Calculate2DBounds from './CalculateBounds.js'
-import { InitializeTags } from "./AssignTagsToScene";
+import { LoadGLTFScene } from "./Logic/ImportModel";
+
+//Props
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -22,9 +23,6 @@ export default class ThreeScene extends Component{
  * Loaders
  */
         const textureLoader = new THREE.TextureLoader();
-        const gltLoader = new GLTFLoader();
-
-
 /**
  * GUI
  */
@@ -43,7 +41,7 @@ export default class ThreeScene extends Component{
  * Scene    
 */ 
         const scene = new THREE.Scene();
-
+        const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
 /**
  * Camera
  */
@@ -78,6 +76,19 @@ export default class ThreeScene extends Component{
             pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
             pointer.y = (event.clientY / window.innerHeight) * 2 - 1;
         }
+
+        function OnPointerClick(event){
+            //Raycaster
+            raycaster.setFromCamera(pointer, camera);
+            const intersects = raycaster.intersectObjects(scene.children);
+            
+            if (intersects.length) {
+                for (const collision of intersects) {
+                    if (!collision['needsUVCoords']) { return; }
+                    console.log(collision);
+                }
+            }
+        }
 /**
  * Sizes
  */
@@ -103,26 +114,7 @@ export default class ThreeScene extends Component{
 /**
  * Models
  */
-        //Bath
-        let bathTub2DBounds = null;
 
-        gltLoader.load('/models/Bath.glb', (model) => {    
-            console.log(model);
-            
-            InitializeTags(model.scene, 'needsUVCoords', false);
-            
-            console.log(model);
-            scene.add(model.scene);
-        
-            const bathTub = model.scene.children[0];
-            bathTub2DBounds = Calculate2DBounds(bathTub);
-
-            bathWater.scale.set((bathTub2DBounds[0] - bathTub2DBounds[1]) * 0.9 , bathTub2DBounds[0]* 0.9, 0);
-        }, 
-        (progress) => {}, 
-        (error) => {
-            throw new Error(error);
-        });
 /**
  * Textures 
  */
@@ -158,34 +150,22 @@ export default class ThreeScene extends Component{
         bathWater.rotateX(- 0.5 * Math.PI);
         bathWater.position.y -= 0.1
         
-        scene.add(bathWater);
-
+        //scene.add(bathWater);
+/**
+* Clock
+*/
         
         const clock = new THREE.Clock();
         
 /**
  * Lights
  */
-        scene.add(new THREE.AmbientLight(0x404040, 1) );
-
+        scene.add(new THREE.AmbientLight(0xffffff, 1));
+        
         function Tick() {
             requestAnimationFrame(Tick);
             const elapsedTime = clock.getElapsedTime();
             //backgroundMaterial.uniforms.uElapsedTime.value = elapsedTime;
-
-            //Raycaster
-            raycaster.setFromCamera(pointer, camera);
-            const intersects = raycaster.intersectObjects(scene.children);
-            
-            if(intersects.length){
-                for(const collision of intersects){
-                    if(!collision['needsUVCoords']) {return ;}
-                    console.log(collision);
-                     }
-                }
-            
-            
-            
             
             renderer.render(scene, camera);
         }
@@ -193,6 +173,7 @@ export default class ThreeScene extends Component{
         Tick();
 
         window.addEventListener('pointermove', OnPointerMove);
+        window.addEventListener('click', OnPointerMove);
     }
 
 
