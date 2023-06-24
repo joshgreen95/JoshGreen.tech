@@ -114,7 +114,7 @@ export default class ThreeScene extends Component{
 /**
  * Models
  */
-
+        scene.add(new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial({Color: 0xff0000})));
 /**
  * Textures 
  */
