@@ -12,8 +12,10 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import backgroundVertexShader from './shaders/background/vertex.glsl';
 import backgroundFragmentShader from './shaders/background/fragment.glsl';
 
-//Functions
+//Logic
 import { LoadGLTFScene } from "./Logic/ImportModel";
+import InitializeCameraArray from "./Logic/InitializeCameraArray";
+import { CameraIndex } from "./Logic/CameraIndex";
 
 //Props
 
@@ -27,10 +29,12 @@ export default class ThreeScene extends Component{
  * GUI
  */
         const gui = new dat.GUI();
+        
 /**
  * Renderer
  */
         const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
 /**
  * Canvas
@@ -45,12 +49,10 @@ export default class ThreeScene extends Component{
 /**
  * Camera
  */
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.position.z = 8;
-        camera.position.y = 8;
-
-
+        const cameraArray = InitializeCameraArray(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        gui.add(cameraArray[1].rotation, 'x', -3.14, 3.14, 0.01);
+        gui.add(cameraArray[1].rotation, 'y', -3.14, 3.14, 0.01);
+        gui.add(cameraArray[1].rotation, 'z', -3.14, 3.14, 0.01);
 /**
  * Axis Helper
  */
@@ -61,7 +63,7 @@ export default class ThreeScene extends Component{
  * Controls
  */
 
-        const controls = new OrbitControls(camera, renderer.domElement);
+        //const controls = new OrbitControls(camera, renderer.domElement);
 /**
  * Raycaster
  */
@@ -79,7 +81,7 @@ export default class ThreeScene extends Component{
 
         function OnPointerClick(event){
             //Raycaster
-            raycaster.setFromCamera(pointer, camera);
+            raycaster.setFromCamera(pointer, cameraArray[0]);
             const intersects = raycaster.intersectObjects(scene.children);
             
             if (intersects.length) {
@@ -103,8 +105,11 @@ export default class ThreeScene extends Component{
             sizes.height = window.innerHeight;
 
             // Update camera
-            camera.aspect = sizes.width / sizes.height;
-            camera.updateProjectionMatrix();
+            cameraArray.forEach((camera) => {
+                camera.aspect = sizes.width / sizes.height;
+                camera.updateProjectionMatrix();
+            })
+
 
             // Update renderer
             renderer.setSize(sizes.width, sizes.height);
@@ -114,7 +119,7 @@ export default class ThreeScene extends Component{
 /**
  * Models
  */
-        scene.add(new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial({Color: 0xff0000})));
+
 /**
  * Textures 
  */
@@ -150,7 +155,6 @@ export default class ThreeScene extends Component{
         bathWater.rotateX(- 0.5 * Math.PI);
         bathWater.position.y -= 0.1
         
-        //scene.add(bathWater);
 /**
 * Clock
 */
@@ -160,14 +164,20 @@ export default class ThreeScene extends Component{
 /**
  * Lights
  */
-        scene.add(new THREE.AmbientLight(0xffffff, 1));
-        
+
+        const hemiSphereLight = new THREE.HemisphereLight(0x5C5B76, 0xBB9195, 1);
+        scene.add(hemiSphereLight);
+
+/**
+ * Loop
+ */
+
         function Tick() {
             requestAnimationFrame(Tick);
             const elapsedTime = clock.getElapsedTime();
             //backgroundMaterial.uniforms.uElapsedTime.value = elapsedTime;
             
-            renderer.render(scene, camera);
+            renderer.render(scene, cameraArray[CameraIndex.index]);
         }
 
         Tick();
