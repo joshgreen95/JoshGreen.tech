@@ -1,7 +1,13 @@
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { InitializeTags } from "./AssignTagsToScene";
+import { InitializeTags } from "../Logic/AssignTagsToScene";
 
-export function LoadGLTFScene(scene, fileString) {
+/**
+ * Loads GLTF Scenes and initializes tags and params
+ * @param {*} scene 
+ * @param {String} fileString 
+ */
+
+function LoadGLTFScene(scene, fileString) {
     var model = null;
     const gltfLoader = new GLTFLoader();
     
@@ -15,3 +21,5 @@ export function LoadGLTFScene(scene, fileString) {
                 throw new Error(error);
             });
 }
+
+export { LoadGLTFScene };

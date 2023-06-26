@@ -1,6 +1,14 @@
 import * as THREE from 'three';
 import { cameras } from '../Scene/CameraAngles';
 
+/**
+ * Creates camera array based on index of cameras  
+ * @param {Number} fov 
+ * @param {Number} aspect 
+ * @param {Number} near 
+ * @param {Number} far 
+ * @returns 
+ */
 function InitializeCameraArray(fov, aspect, near, far) {
     var cameraArray = [];
     for (let cameraProperties of cameras) {

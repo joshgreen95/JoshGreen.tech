@@ -1,12 +1,24 @@
 import { tags } from "./Tags";
 
-export function InitializeTags(scene){
+/**
+ * Initializes tags on scene group
+ * @param {*} scene 
+ */
+
+function InitializeTags(scene){
         tags.forEach((tag) => {
             AssignTagToScene(scene, tag, false);
         })
 }
 
-export function AssignTagToScene(scene, tag, val){
+/**
+ * Assigns tags to scene group.
+ * @param {*} scene 
+ * @param {String} tag 
+ * @param {*} val 
+ */
+
+function AssignTagToScene(scene, tag, val){
     scene.children.forEach((child) => {
         if (child.children.length > 0) {
             AssignTagToScene(child, tag, val);
@@ -17,13 +29,7 @@ export function AssignTagToScene(scene, tag, val){
         }
 
         child['tags'][tag] = val;
-        
-        //EnableShadows
-        enableShadows(child);
-    })
+        })
 }
 
-function enableShadows(child){
-    child.castShadow = true;
-    child.receiveShadow = true;
-}
+export { InitializeTags, AssignTagToScene };
