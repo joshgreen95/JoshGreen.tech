@@ -17,5 +17,13 @@ export function AssignTagToScene(scene, tag, val){
         }
 
         child['tags'][tag] = val;
+        
+        //EnableShadows
+        enableShadows(child);
     })
+}
+
+function enableShadows(child){
+    child.castShadow = true;
+    child.receiveShadow = true;
 }

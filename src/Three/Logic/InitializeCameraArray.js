@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { cameras } from '../Scene/CameraAngles';
 
-export default function InitializeCameraArray(fov, aspect, near, far) {
+function InitializeCameraArray(fov, aspect, near, far) {
     var cameraArray = [];
     for (let cameraProperties of cameras) {
         const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -12,3 +12,5 @@ export default function InitializeCameraArray(fov, aspect, near, far) {
 
     return cameraArray;
 }
+
+export { InitializeCameraArray };

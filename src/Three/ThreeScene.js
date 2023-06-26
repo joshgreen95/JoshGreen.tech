@@ -14,7 +14,7 @@ import backgroundFragmentShader from './shaders/background/fragment.glsl';
 
 //Logic
 import { LoadGLTFScene } from "./Logic/ImportModel";
-import InitializeCameraArray from "./Logic/InitializeCameraArray";
+import { InitializeCameraArray } from "./Logic/InitializeCameraArray";
 import { CameraIndex } from "./Logic/CameraIndex";
 
 //Props
@@ -35,7 +35,7 @@ export default class ThreeScene extends Component{
  */
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
-
+        renderer.shadowMap.enabled = true;
 /**
  * Canvas
  */
@@ -45,25 +45,18 @@ export default class ThreeScene extends Component{
  * Scene    
 */ 
         const scene = new THREE.Scene();
-        const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
+        scene.background = new THREE.Color(0x953506B)
+        
 /**
  * Camera
  */
-        const cameraArray = InitializeCameraArray(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        gui.add(cameraArray[1].rotation, 'x', -3.14, 3.14, 0.01);
-        gui.add(cameraArray[1].rotation, 'y', -3.14, 3.14, 0.01);
-        gui.add(cameraArray[1].rotation, 'z', -3.14, 3.14, 0.01);
-/**
- * Axis Helper
- */
-        const axesHelper = new THREE.AxesHelper(5);
-        scene.add(axesHelper);
+        const cameraArray = InitializeCameraArray(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 /**
  * Controls
  */
 
-        //const controls = new OrbitControls(camera, renderer.domElement);
+        const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
  */
@@ -119,6 +112,7 @@ export default class ThreeScene extends Component{
 /**
  * Models
  */
+        const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
 
 /**
  * Textures 
@@ -128,7 +122,6 @@ export default class ThreeScene extends Component{
 * Geometry
 * */
         const bathWaterGeometry = new THREE.PlaneGeometry(1, 1, 100, 100);
-        console.log(bathWaterGeometry);
 
 /**
  * Materials
@@ -164,9 +157,9 @@ export default class ThreeScene extends Component{
 /**
  * Lights
  */
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
+        scene.add(ambientLight);
 
-        const hemiSphereLight = new THREE.HemisphereLight(0x5C5B76, 0xBB9195, 1);
-        scene.add(hemiSphereLight);
 
 /**
  * Loop
@@ -176,7 +169,6 @@ export default class ThreeScene extends Component{
             requestAnimationFrame(Tick);
             const elapsedTime = clock.getElapsedTime();
             //backgroundMaterial.uniforms.uElapsedTime.value = elapsedTime;
-            
             renderer.render(scene, cameraArray[CameraIndex.index]);
         }
 

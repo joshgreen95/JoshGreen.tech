@@ -2,7 +2,7 @@ const defaultCamera = {
     position: {
         x: 0.5,
         y: 2.0,
-        z: 5.0
+        z: 4.0
     },
     rotation: {
         x: -0.295,
