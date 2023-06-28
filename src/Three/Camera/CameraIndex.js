@@ -1,5 +1,4 @@
 let CameraIndex = {
-    
     cameraIndex: 0,
 
     set index(index){
