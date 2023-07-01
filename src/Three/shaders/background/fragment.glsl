@@ -1,12 +1,13 @@
-varying vec2 vRaycastIntersect;
-varying vec2 vUv;
-varying float vElapsedTime;
+uniform vec3 uSurfaceColor;
+uniform vec3 uDepthColor;
+uniform float uColorOffset;
+uniform float uColorMultiplier;
 
-uniform sampler2D uTexture;
+varying float vHeight;
 
 void main(){
+  float mixStrength = vHeight + uColorOffset;  
+  vec3 color = mix(uDepthColor, uSurfaceColor, vHeight);
 
-  vec4 textureColor = texture2D(uTexture, vUv);
-  gl_FragColor = textureColor;
-
+  gl_FragColor = vec4(color, 0.8);
 }

@@ -130,11 +130,17 @@ export default class ThreeScene extends Component{
             vertexShader: backgroundVertexShader,
             fragmentShader: backgroundFragmentShader,
             uniforms: {
-                uWaveAmplitude: {value: 1},
-                uWaveDampening: {value: 0.2},
-                uRaycastIntersect: {value: new THREE.Vector2(0, 0)},
-                uElapsedTime: {value: 0.0},
-                uTexture: {value: carpetTexture},
+                uWaveAmplitude: { value: 1 },
+                uWaveDampening: { value: 0.2 },
+                uWaveFrequency: { value: 10.0 },
+                uRaycastIntersect: { value: new THREE.Vector2(0, 0) },
+                uElapsedTime: { value: 0.0 },
+                uDecayTime: { value: 1.0 },
+
+                uSurfaceColor: { value: new THREE.Color(0xbcffee) },
+                uDepthColor: { value: new THREE.Color(0x9effe6) },
+                uColorOffset: { value: 0.08 },
+                uColorMultiplier: { value: 5 },
             }
         });
 /**

@@ -1,3 +1,3 @@
-function AnimateFloatable(floatable, elapsedTime){
+function AnimateFloatable(floatable, elapsedTime, uvIntersect){
     
 }
