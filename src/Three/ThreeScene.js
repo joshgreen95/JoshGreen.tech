@@ -181,7 +181,7 @@ export default class ThreeScene extends Component{
         Tick();
 
         window.addEventListener('pointermove', OnPointerMove);
-        window.addEventListener('click', OnPointerMove);
+        window.addEventListener('click', OnPointerClick);
     }
 
 
