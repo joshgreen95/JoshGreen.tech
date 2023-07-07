@@ -77,11 +77,12 @@ export default class ThreeScene extends Component{
             raycaster.setFromCamera(pointer, cameraArray[0]);
             const intersects = raycaster.intersectObjects(scene.children);
             
-            if (intersects.length) {
-                for (const collision of intersects) {
-                    if (!collision['needsUVCoords']) { return; }
-                    console.log(collision);
-                }
+            if (intersects.length > 0) {
+                let collision = intersects[0];
+                if (!collision.object.tags['needsUVCoords']) { return; }
+                collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
+                collision.object.material.uniforms.uRaycastIntersectWorld.value = collision.point;
+                timeSinceLastMove = clock.getElapsedTime();
             }
         }
 /**
@@ -134,9 +135,10 @@ export default class ThreeScene extends Component{
                 uWaveDampening: { value: 0.2 },
                 uWaveFrequency: { value: 10.0 },
                 uRaycastIntersect: { value: new THREE.Vector2(0, 0) },
+                uRaycastIntersectWorld: { value: new THREE.Vector3(0, 0, 0) },
                 uElapsedTime: { value: 0.0 },
                 uDecayTime: { value: 1.0 },
-
+                //Fragment
                 uSurfaceColor: { value: new THREE.Color(0xbcffee) },
                 uDepthColor: { value: new THREE.Color(0x9effe6) },
                 uColorOffset: { value: 0.08 },
