@@ -7,19 +7,22 @@ import { InitializeTags } from "../Logic/AssignTagsToScene";
  * @param {String} fileString 
  */
 
-function LoadGLTFScene(scene, fileString) {
-    var model = null;
+function LoadGLTFScene(scene, fileString, initializationFunction, self) {
     const gltfLoader = new GLTFLoader();
-    
+
     gltfLoader.load(fileString, (loadedModel) => {
-            InitializeTags(loadedModel.scene);
-            scene.add(loadedModel.scene);
-            return loadedModel;
-        },
-            (progress) => { },
-            (error) => {
-                throw new Error(error);
-            });
+        InitializeTags(loadedModel.scene);
+        scene.add(loadedModel.scene);
+
+        if (initializationFunction && self) {
+            initializationFunction(self, loadedModel.scene);
+        };
+
+    },
+        (progress) => { },
+        (error) => {
+            throw new Error(error);
+        });
 }
 
 export { LoadGLTFScene };
