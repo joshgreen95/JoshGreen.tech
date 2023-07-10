@@ -1,4 +1,5 @@
 import { LoadGLTFScene } from "../ImportModel";
+import { AnimateFloatable } from "./AnimateFloatables";
 
 class Floatable {
     constructor(modelRef, modelScale, pageRef, scene, waterMesh) {
@@ -23,6 +24,9 @@ class Floatable {
         console.log(this.waterMesh);
     }
 
+    Float() {
+        AnimateFloatable(this.model, this.waterMesh.material);
+    }
 }
 
 export { Floatable };
