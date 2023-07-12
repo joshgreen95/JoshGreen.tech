@@ -13,11 +13,12 @@ import backgroundVertexShader from './shaders/background/vertex.glsl';
 import backgroundFragmentShader from './shaders/background/fragment.glsl';
 
 //Logic
-import { LoadGLTFScene } from "./Logic/ImportModel";
-import { InitializeCameraArray } from "./Logic/InitializeCameraArray";
-import { CameraIndex } from "./Logic/CameraIndex";
+import { LoadGLTFScene } from "./Props/ImportModel.js";
+import { InitializeCameraArray } from "./Camera/InitializeCameraArray.js";
+import { CameraIndex } from './Camera/CameraIndex.js'
 
 //Props
+import { Floatable } from "./Props/Floatables/Floatable";
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -73,6 +74,8 @@ export default class ThreeScene extends Component{
         }
 
         function OnPointerClick(event){
+            //Fix for Mobile
+            OnPointerMove(event);
             //Raycaster
             raycaster.setFromCamera(pointer, cameraArray[0]);
             const intersects = raycaster.intersectObjects(scene.children);
@@ -81,7 +84,15 @@ export default class ThreeScene extends Component{
                 let collision = intersects[0];
                 if (!collision.object.tags['needsUVCoords']) { return; }
                 collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
+
+                /**
+                For some reason raycast intersect world pos is flipped on Z axis 
+                This Inverts Backflip that back
+                TODO LOOK INTO THIS 
+                **/
+
                 collision.object.material.uniforms.uRaycastIntersectWorld.value = collision.point;
+                collision.object.material.uniforms.uRaycastIntersectWorld.value.z = -collision.object.material.uniforms.uRaycastIntersectWorld.value.z;
                 timeSinceLastMove = clock.getElapsedTime();
             }
         }
@@ -119,45 +130,59 @@ export default class ThreeScene extends Component{
  * Textures 
  */
         const carpetTexture = textureLoader.load('/textures/carpet.jpg');
-/**
-* Geometry
-* */
-        const bathWaterGeometry = new THREE.PlaneGeometry(1, 1, 100, 100);
+        /**
+        * Geometry
+        * */
+        const bathWaterGeometry = new THREE.PlaneGeometry(5, 10, 100, 100);
 
-/**
- * Materials
- */     
+        /**
+         * Materials
+         */
+        var timeSinceLastMove = 0;
+
         const bathWaterMaterial = new THREE.ShaderMaterial({
             vertexShader: backgroundVertexShader,
             fragmentShader: backgroundFragmentShader,
             uniforms: {
                 uWaveAmplitude: { value: 1 },
                 uWaveDampening: { value: 0.2 },
-                uWaveFrequency: { value: 10.0 },
+                uWaveFrequency: { value: 10 },
+                uWaveScale: { value: .9 },
+                uWaterSize: { value: new THREE.Vector2(bathWaterGeometry.parameters.width, bathWaterGeometry.parameters.height) },
                 uRaycastIntersect: { value: new THREE.Vector2(0, 0) },
+
                 uRaycastIntersectWorld: { value: new THREE.Vector3(0, 0, 0) },
                 uElapsedTime: { value: 0.0 },
                 uDecayTime: { value: 1.0 },
-                //Fragment
+
                 uSurfaceColor: { value: new THREE.Color(0xbcffee) },
                 uDepthColor: { value: new THREE.Color(0x9effe6) },
                 uColorOffset: { value: 0.08 },
                 uColorMultiplier: { value: 5 },
             }
         });
-/**
- * Mesh
- */
+        gui.add(bathWaterMaterial.uniforms.uWaveDampening, 'value', 0, 1, 0.001);
+        gui.add(bathWaterMaterial.uniforms.uWaveAmplitude, 'value', -10, 10, 0.001);
+        gui.add(bathWaterMaterial.uniforms.uWaveFrequency, 'value', -10, 100, 0.001);
+        gui.add(bathWaterMaterial.uniforms.uDecayTime, 'value', -10, 10, 0.001);
+
+        gui.addColor(bathWaterMaterial.uniforms.uSurfaceColor, 'value');
+        gui.add(bathWaterMaterial.uniforms.uColorOffset, 'value', -10, 10, 0.001);
+
+        /**
+         * Mesh
+         */
         const bathWater = new THREE.Mesh(bathWaterGeometry, bathWaterMaterial);
+        bathWater.position.y = 2
         bathWater.tags = {};
         bathWater.tags['needsUVCoords'] = true;
 
-
         bathWater.rotateX(- 0.5 * Math.PI);
-        bathWater.position.y -= 0.1
-
-
-        
+        scene.add(bathWater);
+        /**
+         * Floatables
+         */
+        const duck = new Floatable('/models/Duck.glb', 0.5, null, scene, bathWater);
 /**
 * Clock
 */
@@ -174,12 +199,20 @@ export default class ThreeScene extends Component{
 /**
  * Loop
  */
-
         function Tick() {
             requestAnimationFrame(Tick);
-            const elapsedTime = clock.getElapsedTime();
-            //backgroundMaterial.uniforms.uElapsedTime.value = elapsedTime;
+            UpdateWaterShader();
+
+            duck.Float();
+
             renderer.render(scene, cameraArray[CameraIndex.index]);
+
+
+            function UpdateWaterShader() {
+                const elapsedTime = clock.getElapsedTime();
+                const timeDifference = elapsedTime - timeSinceLastMove;
+                bathWaterMaterial.uniforms.uElapsedTime.value = timeDifference;
+            }
         }
 
         Tick();

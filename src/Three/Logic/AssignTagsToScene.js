@@ -1,4 +1,4 @@
-import { tags } from "./Tags";
+import { tags } from "../Props/Tags.js";
 
 /**
  * Initializes tags on scene group

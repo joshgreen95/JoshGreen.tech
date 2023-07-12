@@ -1,17 +1,19 @@
 function GetDistance(pos1, pos2) {
-    //This is bad programming
-    let xSquared, ySquared, zSquared = 0;
-    let xDifference, yDifference, zDifference = 0;
+    if (typeof pos1 == 'number' && typeof pos2 == 'number') {
+        return pos2 - pos1;
+    }
 
-    xDifference = pos2.x - pos1.x
-    yDifference = pos2.y - pos1.y
-    zDifference = pos2.z - pos1.z
+    //This is bad programming
+    let xSquared, zSquared = 0;
+    let xDifference, zDifference = 0;
+
+    xDifference = Math.abs(pos2.x - pos1.x);
+    zDifference = Math.abs(pos2.z - pos1.z);
 
     xSquared = Math.pow(xDifference, 2);
-    ySquared = Math.pow(yDifference, 2);
     zSquared = Math.pow(zDifference, 2);
 
-    const sumCoordsSquared = xSquared + ySquared + zSquared;
+    const sumCoordsSquared = xSquared + zSquared;
     const distance = Math.sqrt(sumCoordsSquared);
 
     return distance;

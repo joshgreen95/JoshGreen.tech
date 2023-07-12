@@ -1,23 +1,30 @@
 import { GetDistance } from "../../Logic/GetDistance";
-
-function AnimateFloatable(floatable, bathWaterMaterial) {
+import * as THREE from 'three';
+function AnimateFloatable(floatable, bathWaterMesh) {
     if (!floatable) { return; }
 
-    const amplitude = bathWaterMaterial.uniforms.uWaveAmplitude.value;
-    const dampening = bathWaterMaterial.uniforms.uWaveDampening.value;
-    const frequency = bathWaterMaterial.uniforms.uWaveFrequency.value;
-    const elapsedTime = bathWaterMaterial.uniforms.uElapsedTime.value;
-    const decayTime = bathWaterMaterial.uniforms.uDecayTime.value;
-    const raycastIntersectWorld = bathWaterMaterial.uniforms.uRaycastIntersectWorld.value;
+    const amplitude = bathWaterMesh.material.uniforms.uWaveAmplitude.value;
+    const dampening = bathWaterMesh.material.uniforms.uWaveDampening.value;
+    const frequency = bathWaterMesh.material.uniforms.uWaveFrequency.value;
+    const waveScale = 1 / bathWaterMesh.material.uniforms.uWaveScale.value;
+    const elapsedTime = bathWaterMesh.material.uniforms.uElapsedTime.value;
+    const decayTime = bathWaterMesh.material.uniforms.uDecayTime.value;
+    const raycastIntersectWorld = bathWaterMesh.material.uniforms.uRaycastIntersectWorld.value;
+
 
     let clampedTime = Math.min(Math.max(elapsedTime, 0), decayTime);
     let timePercentage = (1 - (clampedTime / decayTime));
     let adjustedAmplitude = timePercentage * amplitude;
-    let distanceFromIntersect = GetDistance(floatable.position, raycastIntersectWorld);
-    let squareDistance = Math.pow(distanceFromIntersect, 2);
-    let height = 1 - adjustedAmplitude * Math.cos(squareDistance + elapsedTime * frequency) * Math.exp(-dampening * squareDistance);
 
-    floatable.position.y = height;
+    let distanceFromIntersect = new THREE.Vector2((GetDistance(raycastIntersectWorld.x, floatable.position.x)),
+        (GetDistance(raycastIntersectWorld.z, floatable.position.z)));
+
+    let squareDistance = Math.pow(distanceFromIntersect.x, 2) + Math.pow(distanceFromIntersect.y, 2);
+    let scaledSquareDistance = squareDistance * waveScale;
+
+
+    let height = 1 - adjustedAmplitude * (Math.cos(scaledSquareDistance + elapsedTime * frequency) * Math.exp(-dampening * scaledSquareDistance));
+    floatable.position.y = bathWaterMesh.position.y + height;
 }
 
 

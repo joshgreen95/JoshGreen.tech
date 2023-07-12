@@ -1,5 +1,6 @@
 import { LoadGLTFScene } from "../ImportModel";
 import { AnimateFloatable } from "./AnimateFloatables";
+import { PlaceRandomly } from "./PlaceFloatable";
 
 class Floatable {
     constructor(modelRef, modelScale, pageRef, scene, waterMesh) {
@@ -16,34 +17,16 @@ class Floatable {
         model.scale.setScalar(self.scale);
 
         //Random Placement;
-        self.PlaceRandomly();
+        self.Place();
     }
 
-    PlaceRandomly() {
-        console.log(this.model);
-        const waterPosX = this.waterMesh.position.x;
-        const waterPosZ = this.waterMesh.position.z;
-        const waterWidth = this.waterMesh.geometry.parameters.width;
-        const waterHeight = this.waterMesh.geometry.parameters.height;
-
-        const boundaryOffset = 3;
-        const offsetWidth = waterWidth - boundaryOffset;
-        const offsetHeight = waterHeight - boundaryOffset
-
-        let xPos = (((Math.random() * (offsetWidth)) - (offsetWidth / 2)) + waterPosX);
-        let zPos = (((Math.random() * offsetHeight) - (offsetHeight / 2)) + waterPosZ);
-
-        console.log(xPos, zPos);
-        this.model.position.x = xPos;
-        this.model.position.z = zPos;
-
-        const rotationalFactor = Math.PI * 0.75;
-        this.model.rotation.y = rotationalFactor / 2 - ((Math.random() * rotationalFactor));
+    Place() {
+        PlaceRandomly(this.model, this.waterMesh);
     }
 
     Float() {
         if (this.model) {
-            AnimateFloatable(this.model, this.waterMesh.material);
+            AnimateFloatable(this.model, this.waterMesh);
         }
     }
 }

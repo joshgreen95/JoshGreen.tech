@@ -1,6 +1,6 @@
 import './App.css';
 import ThreeScene from './Three/ThreeScene.js';
-import { CameraIndex } from './Three/Logic/CameraIndex';
+import { CameraIndex } from './Three/Camera/CameraIndex';
 function App() {
   return (
       <>
