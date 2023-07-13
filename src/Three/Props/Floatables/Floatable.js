@@ -15,7 +15,8 @@ class Floatable {
     Instantiate(self, model) {
         self.model = model;
         model.scale.setScalar(self.scale);
-
+        self.model.tags = {}
+        self.model.tags['clickable'] = true;
         //Random Placement;
         self.Place();
     }

@@ -1,5 +1,6 @@
 function GetDistance(pos1, pos2) {
     if (typeof pos1 == 'number' && typeof pos2 == 'number') {
+        console.log(pos1, pos2);
         return pos2 - pos1;
     }
 

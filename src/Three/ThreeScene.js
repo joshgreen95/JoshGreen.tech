@@ -1,5 +1,5 @@
 //Core
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
@@ -19,6 +19,7 @@ import { CameraIndex } from './Camera/CameraIndex.js'
 
 //Props
 import { Floatable } from "./Props/Floatables/Floatable";
+import { cameras } from "./Scene/CameraAngles";
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -61,7 +62,8 @@ export default class ThreeScene extends Component{
 /**
  * Raycaster
  */
-        const raycaster = new THREE.Raycaster()
+        const raycaster = new THREE.Raycaster();
+        
         
 /**
  * Pointer
@@ -77,23 +79,24 @@ export default class ThreeScene extends Component{
             //Fix for Mobile
             OnPointerMove(event);
             //Raycaster
-            raycaster.setFromCamera(pointer, cameraArray[0]);
+            raycaster.setFromCamera(pointer, cameraArray[CameraIndex.index]);
             const intersects = raycaster.intersectObjects(scene.children);
             
             if (intersects.length > 0) {
                 let collision = intersects[0];
-                if (!collision.object.tags['needsUVCoords']) { return; }
-                collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
+                
+                if (collision.object.tags['needsUVCoords']) {
+                    collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
 
-                /**
-                For some reason raycast intersect world pos is flipped on Z axis 
-                This Inverts Backflip that back
-                TODO LOOK INTO THIS 
-                **/
-
-                collision.object.material.uniforms.uRaycastIntersectWorld.value = collision.point;
-                collision.object.material.uniforms.uRaycastIntersectWorld.value.z = -collision.object.material.uniforms.uRaycastIntersectWorld.value.z;
-                timeSinceLastMove = clock.getElapsedTime();
+                    /**
+                    For some reason raycast intersect world pos is flipped on Z axis 
+                    This Inverts Backflip that back
+                    TODO LOOK INTO THIS 
+                    **/
+                    const adjustedX = collision.point.x;
+                    const adjustedZ = (1 - (collision.point.z / collision.object.geometry.parameters.height)) * collision.object.geometry.parameters.height;
+                    collision.object.material.uniforms.uRaycastIntersectWorld.value = new THREE.Vector3(adjustedX, 0, adjustedZ);
+                    timeSinceLastMove = clock.getElapsedTime(); }
             }
         }
 /**
@@ -130,14 +133,13 @@ export default class ThreeScene extends Component{
  * Textures 
  */
         const carpetTexture = textureLoader.load('/textures/carpet.jpg');
-        /**
-        * Geometry
-        * */
-        const bathWaterGeometry = new THREE.PlaneGeometry(5, 10, 100, 100);
-
-        /**
-         * Materials
-         */
+/**
+* Geometry
+* */
+        const bathWaterGeometry = new THREE.PlaneGeometry(10, 22, 100, 100);
+/**
+* Materials
+*/
         var timeSinceLastMove = 0;
 
         const bathWaterMaterial = new THREE.ShaderMaterial({
@@ -161,28 +163,24 @@ export default class ThreeScene extends Component{
                 uColorMultiplier: { value: 5 },
             }
         });
-        gui.add(bathWaterMaterial.uniforms.uWaveDampening, 'value', 0, 1, 0.001);
-        gui.add(bathWaterMaterial.uniforms.uWaveAmplitude, 'value', -10, 10, 0.001);
-        gui.add(bathWaterMaterial.uniforms.uWaveFrequency, 'value', -10, 100, 0.001);
-        gui.add(bathWaterMaterial.uniforms.uDecayTime, 'value', -10, 10, 0.001);
-
-        gui.addColor(bathWaterMaterial.uniforms.uSurfaceColor, 'value');
-        gui.add(bathWaterMaterial.uniforms.uColorOffset, 'value', -10, 10, 0.001);
-
-        /**
-         * Mesh
-         */
+/**
+ * Mesh
+ */
         const bathWater = new THREE.Mesh(bathWaterGeometry, bathWaterMaterial);
-        bathWater.position.y = 2
         bathWater.tags = {};
         bathWater.tags['needsUVCoords'] = true;
-
-        bathWater.rotateX(- 0.5 * Math.PI);
+        bathWater.position.set(13.3, -2.5, 10);
+        bathWater.rotateX(-0.5 * Math.PI);
+        
         scene.add(bathWater);
-        /**
-         * Floatables
-         */
+/**
+* Floatables
+*/
         const duck = new Floatable('/models/Duck.glb', 0.5, null, scene, bathWater);
+        const duck1 = new Floatable('/models/Devil_Duck.glb', 0.5, null, scene, bathWater);
+        const duck2 = new Floatable('/models/G_Duck.glb', 0.5, null, scene, bathWater);
+
+        const floatables = [duck, duck1, duck2];
 /**
 * Clock
 */
@@ -203,11 +201,12 @@ export default class ThreeScene extends Component{
             requestAnimationFrame(Tick);
             UpdateWaterShader();
 
-            duck.Float();
+            for(let i = 0; i < floatables.length; i++){
+                floatables[i].Float();
+            }
 
             renderer.render(scene, cameraArray[CameraIndex.index]);
-
-
+            
             function UpdateWaterShader() {
                 const elapsedTime = clock.getElapsedTime();
                 const timeDifference = elapsedTime - timeSinceLastMove;
