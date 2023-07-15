@@ -1,12 +1,11 @@
 //Core
-import React, { Component, useState } from "react";
+import React, { Component} from "react";
+import { createRoot } from 'react-dom/client';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
+//Controls
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-//Loaders
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 //Shaders
 import backgroundVertexShader from './shaders/background/vertex.glsl';
@@ -19,10 +18,24 @@ import { CameraIndex } from './Camera/CameraIndex.js'
 
 //Props
 import { Floatable } from "./Props/Floatables/Floatable";
-import { cameras } from "./Scene/CameraAngles";
+
+
+//JSX Components
+import TestScreen from "../React/Logic/Components/TestScreen";
 
 export default class ThreeScene extends Component{
+     constructor(props){
+        super(props)
+         this.state = { testWindowShown : true}
+    }
+
     componentDidMount(){
+/**
+ * HTML Elements
+ */
+
+        const testWindow = document.getElementById('infoBox');
+
 /**
  * Loaders
  */
@@ -78,10 +91,13 @@ export default class ThreeScene extends Component{
         function OnPointerClick(event){
             //Fix for Mobile
             OnPointerMove(event);
+
+            const root = createRoot(testWindow);
+            root.render((<TestScreen />));
+
             //Raycaster
             raycaster.setFromCamera(pointer, cameraArray[CameraIndex.index]);
             const intersects = raycaster.intersectObjects(scene.children);
-            
             if (intersects.length > 0) {
                 let collision = intersects[0];
                 
@@ -95,7 +111,9 @@ export default class ThreeScene extends Component{
                     **/
                     const adjustedX = collision.point.x;
                     const adjustedZ = (1 - (collision.point.z / collision.object.geometry.parameters.height)) * collision.object.geometry.parameters.height;
+                    
                     collision.object.material.uniforms.uRaycastIntersectWorld.value = new THREE.Vector3(adjustedX, 0, adjustedZ);
+                    console.log(collision.object.material.uniforms.uRaycastIntersectWorld.value);
                     timeSinceLastMove = clock.getElapsedTime(); }
             }
         }
@@ -220,15 +238,15 @@ export default class ThreeScene extends Component{
         window.addEventListener('click', OnPointerClick);
     }
 
-
-
     render(){
         return (
-            <div 
-            ref={mount => {
-                this.mount = mount;
-                }} 
-            id="renderContainer" />
+            <>
+                <div 
+                ref={mount => {
+                    this.mount = mount;
+                    }} 
+                id="renderContainer" />
+            </>
         );
     }
 }
