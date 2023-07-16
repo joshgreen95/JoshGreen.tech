@@ -1,7 +1,11 @@
-let PageManager = {
-    activePage: null,
-    isWindowShown: false,
+import { CameraIndex } from "../../Three/Camera/CameraIndex";
 
+let PageManager = {
+    constructor(){
+        this.activeCamera = CameraIndex.index;
+        this.activePage = null;
+        this.isWindowShown = false;
+    },
     get activePage(){
         return this.activePage;
     },

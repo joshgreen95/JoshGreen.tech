@@ -1,11 +1,7 @@
 import './App.css';
 import ThreeScene from './Three/ThreeScene.js';
 import { CameraIndex } from './Three/Camera/CameraIndex.js';
-import { PageManager } from './React/Logic/PageManager.js';
-import { useState } from 'react';
 
-var activePage, setActivePage;
-var isPageShown, setIsPageShown;
 function App() {
   return (
       <>
@@ -15,7 +11,7 @@ function App() {
           <button onClick={() => { CameraIndex.index = 2; }}>Toilet</button>
         </div>
       
-        <div className='infoBox' id='infoBox'>
+        <div className='windowBox' id='windowBox'>
           {/*Info box gets appended here through createRoot fuction*/}
         </div>
 

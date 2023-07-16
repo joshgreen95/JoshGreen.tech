@@ -24,8 +24,8 @@ function AnimateFloatable(floatable, bathWaterMesh) {
 
     
     let height = 1 - adjustedAmplitude * (Math.cos(scaledSquareDistance + elapsedTime * frequency) * Math.exp(-dampening * scaledSquareDistance));
-    floatable.position.y = bathWaterMesh.position.y + height;
-
+    //floatable.position.y = bathWaterMesh.position.y + height;
+    floatable.position.y = 3;
 }
 
 

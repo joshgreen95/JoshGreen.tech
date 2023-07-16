@@ -13,7 +13,7 @@ import backgroundFragmentShader from './shaders/background/fragment.glsl';
 
 //Logic
 import { LoadGLTFScene } from "./Props/ImportModel.js";
-import { InitializeCameraArray } from "./Camera/InitializeCameraArray.js";
+import { InitializeCameraArray, UpdateCameraArray } from "./Camera/InitializeCameraArray.js";
 import { CameraIndex } from './Camera/CameraIndex.js'
 
 //Props
@@ -24,18 +24,20 @@ import { Floatable } from "./Props/Floatables/Floatable";
 import TestScreen from "../React/Logic/Components/TestScreen";
 
 export default class ThreeScene extends Component{
-     constructor(props){
-        super(props)
-         this.state = { testWindowShown : true}
-    }
-
     componentDidMount(){
 /**
  * HTML Elements
  */
 
-        const testWindow = document.getElementById('infoBox');
+        const testWindow = document.getElementById('windowBox');
 
+/**
+ * Render States
+ */
+        const state = {
+            isWindowShowing: false,
+            windowContent: null,
+        }
 /**
  * Loaders
  */
@@ -43,7 +45,7 @@ export default class ThreeScene extends Component{
 /**
  * GUI
  */
-        const gui = new dat.GUI();
+    //const gui = new dat.GUI();
         
 /**
  * Renderer
@@ -92,14 +94,17 @@ export default class ThreeScene extends Component{
             //Fix for Mobile
             OnPointerMove(event);
 
-            const root = createRoot(testWindow);
-            root.render((<TestScreen />));
 
             //Raycaster
             raycaster.setFromCamera(pointer, cameraArray[CameraIndex.index]);
             const intersects = raycaster.intersectObjects(scene.children);
             if (intersects.length > 0) {
                 let collision = intersects[0];
+                if(collision.object.tags['floatable']){
+                    console.log('Clicked', floatables[collision.object.tags['floatableIndex']]);
+                    floatables[collision.object.tags['floatableIndex']].Focus();
+                }
+
                 
                 if (collision.object.tags['needsUVCoords']) {
                     collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
@@ -109,6 +114,7 @@ export default class ThreeScene extends Component{
                     This Inverts Backflip that back
                     TODO LOOK INTO THIS 
                     **/
+
                     const adjustedX = collision.point.x;
                     const adjustedZ = (1 - (collision.point.z / collision.object.geometry.parameters.height)) * collision.object.geometry.parameters.height;
                     
@@ -136,7 +142,6 @@ export default class ThreeScene extends Component{
                 camera.updateProjectionMatrix();
             })
 
-
             // Update renderer
             renderer.setSize(sizes.width, sizes.height);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -145,7 +150,7 @@ export default class ThreeScene extends Component{
 /**
  * Models
  */
-        const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
+        //const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
 
 /**
  * Textures 
@@ -190,27 +195,26 @@ export default class ThreeScene extends Component{
         bathWater.position.set(13.3, -2.5, 10);
         bathWater.rotateX(-0.5 * Math.PI);
         
-        scene.add(bathWater);
+       // scene.add(bathWater);
 /**
 * Floatables
 */
-        const duck = new Floatable('/models/Duck.glb', 0.5, null, scene, bathWater);
-        const duck1 = new Floatable('/models/Devil_Duck.glb', 0.5, null, scene, bathWater);
-        const duck2 = new Floatable('/models/G_Duck.glb', 0.5, null, scene, bathWater);
+        const duck = new Floatable('/models/Duck.glb', 0, 0.5, null, scene, bathWater);
+        const duck1 = new Floatable('/models/Devil_Duck.glb', 1, 0.5, null, scene, bathWater);
+        const duck2 = new Floatable('/models/G_Duck.glb', 2, 0.5, null, scene, bathWater);
 
         const floatables = [duck, duck1, duck2];
+        console.log(floatables);
 /**
 * Clock
 */
-        
         const clock = new THREE.Clock();
-        
+
 /**
  * Lights
  */
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
         scene.add(ambientLight);
-
 
 /**
  * Loop
@@ -218,7 +222,9 @@ export default class ThreeScene extends Component{
         function Tick() {
             requestAnimationFrame(Tick);
             UpdateWaterShader();
-
+            UpdateCameraArray();
+            
+            //Animate Floatables
             for(let i = 0; i < floatables.length; i++){
                 floatables[i].Float();
             }

@@ -1,4 +1,4 @@
 export const tags = [
     'needsUVCoords',
-    'clickable'
+    'floatable'
 ]

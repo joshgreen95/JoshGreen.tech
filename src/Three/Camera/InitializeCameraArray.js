@@ -9,8 +9,10 @@ import { cameras } from '../Scene/CameraAngles';
  * @param {Number} far 
  * @returns 
  */
+
+var cameraArray = [];
+
 function InitializeCameraArray(fov, aspect, near, far) {
-    var cameraArray = [];
     for (let cameraProperties of cameras) {
         const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
         camera.position.set(cameraProperties.position.x, cameraProperties.position.y, cameraProperties.position.z);
@@ -21,4 +23,21 @@ function InitializeCameraArray(fov, aspect, near, far) {
     return cameraArray;
 }
 
-export { InitializeCameraArray };
+function AddCamera(camera){
+    cameraArray.push(camera);
+}
+
+function UpdateCameraArray(){
+    return cameraArray;
+}
+
+function GetCameraIndex(camera){
+    for(let i = 0; i< cameraArray.length; i++){
+        if(cameraArray[i] === camera){
+            return i;
+        }
+    }
+    
+    return 99;
+}
+export { InitializeCameraArray, AddCamera, UpdateCameraArray, GetCameraIndex };

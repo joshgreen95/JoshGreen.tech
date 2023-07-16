@@ -8,13 +8,10 @@ button{
   width: 200px;
 }
 
-h1{
-  background-color: blueviolet;
-  position: fixed;
-  align-items: center;
-  justify-content: center;
-}
-
 .buttonContainer{
   position: fixed;
+}
+
+.windowBox{
+  display: flexbox;
 }
