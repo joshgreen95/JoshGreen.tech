@@ -1,26 +1,27 @@
+import { createRoot } from "react-dom/client";
 import { CameraIndex } from "../../Three/Camera/CameraIndex";
 
-let PageManager = {
+class PageManager{
     constructor(){
         this.activeCamera = CameraIndex.index;
         this.activePage = null;
         this.isWindowShown = false;
-    },
-    get activePage(){
-        return this.activePage;
-    },
-
-    set activePage(page){
-        this.activePage = page;
-    },
+        this.windowBox = document.getElementById('windowBox');
+    };
     
-    get isWindowShown(){
-        return this.isWindowShown;
-    },
+    Update(page){
+        if(!this.isWindowShown){
+            this.activePage = page;
+            console.log(this.activePage);
+            createRoot(this.windowBox).render(this.activePage());
+            this.isWindowShown = true;
+        }
+    }
 
-    set isWindowShown(state){
-        this.isWindowShown = state;
-    },
+    Close(){
+        createRoot(this.windowBox).unmount();
+        this.isWindowShown = false;
+    }
 }
 
 export { PageManager };

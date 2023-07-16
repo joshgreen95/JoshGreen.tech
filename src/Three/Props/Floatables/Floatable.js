@@ -5,6 +5,7 @@ import { PlaceRandomly } from "./PlaceFloatable";
 import { AddCamera, GetCameraIndex } from '../../Camera/InitializeCameraArray';
 import { CameraIndex } from '../../Camera/CameraIndex';
 import { AssignTagToScene } from '../../Logic/AssignTagsToScene';
+import { PageManager } from '../../../React/Logic/PageManager';
 
 class Floatable {
     constructor(modelRef, floatableIndex, modelScale, pageRef, scene, waterMesh) {
@@ -18,7 +19,14 @@ class Floatable {
         this.model = LoadGLTFScene(this.scene, this.modelRef, this.Instantiate, this);
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.cameraIndex = null;
-
+        
+        this.cameraOffset = {
+            x: 3.41,
+            y: 1.1,
+            z: 1
+        }
+        
+        this.focused = false;
     }
 
     Instantiate(self, model) {
@@ -30,9 +38,24 @@ class Floatable {
         //Random Placement;
         self.Place();
 
+        
         //Camera Management
+        //Is Camera on left or right side
+         self.camera.position.y = self.model.position.y + self.cameraOffset.y;
+         //Left
+        console.log(self.model.position.x < self.waterMesh.position.x)
+         if(self.model.position.x < self.waterMesh.position.x){
+             self.camera.position.x = self.model.position.x + self.cameraOffset.x;
+             self.camera.position.z = self.model.position.z + self.cameraOffset.z;
+         } 
+         //Right
+         else {
+            
+             self.camera.position.x = self.model.position.x - self.cameraOffset.x;
+             self.camera.position.z = self.model.position.z + self.cameraOffset.z;
+         }
+    
         AddCamera(self.camera);
-        self.camera.position.set(self.model.position);
         self.cameraIndex = GetCameraIndex(self.camera);
     }
 
@@ -47,7 +70,13 @@ class Floatable {
     }
 
     Focus(){
-        CameraIndex.index = this.cameraIndex;
+        if (!this.focused){
+            CameraIndex.index = this.cameraIndex;
+            PageManager.activePage = this.page;
+            PageManager.isWindowShown = true;
+
+            this.focused = true;
+        }
     }
 }
 

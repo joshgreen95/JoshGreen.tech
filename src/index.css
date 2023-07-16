@@ -13,5 +13,10 @@ button{
 }
 
 .windowBox{
+  position: fixed;
   display: flexbox;
+  align-items: start;
+  justify-content: center;
+  margin: 15vh;
+  background-color: grey;
 }

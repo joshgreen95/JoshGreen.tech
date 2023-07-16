@@ -14,8 +14,10 @@ function App() {
         <div className='windowBox' id='windowBox'>
           {/*Info box gets appended here through createRoot fuction*/}
         </div>
-
-        <ThreeScene />
+        <>
+          <ThreeScene />
+        </>
+        
       </>
   );
 }

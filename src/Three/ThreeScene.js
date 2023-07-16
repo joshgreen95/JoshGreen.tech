@@ -19,9 +19,12 @@ import { CameraIndex } from './Camera/CameraIndex.js'
 //Props
 import { Floatable } from "./Props/Floatables/Floatable";
 
+//PageManger
+import { PageManager } from "../React/Logic/PageManager";
 
 //JSX Components
 import TestScreen from "../React/Logic/Components/TestScreen";
+import DuckTest1 from "../React/Logic/Components/DuckTest1";
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -29,19 +32,14 @@ export default class ThreeScene extends Component{
  * HTML Elements
  */
 
-        const testWindow = document.getElementById('windowBox');
-
 /**
- * Render States
+ * Page Manager
  */
-        const state = {
-            isWindowShowing: false,
-            windowContent: null,
-        }
+        const pageManager = new PageManager();
 /**
  * Loaders
  */
-        const textureLoader = new THREE.TextureLoader();
+
 /**
  * GUI
  */
@@ -93,16 +91,21 @@ export default class ThreeScene extends Component{
         function OnPointerClick(event){
             //Fix for Mobile
             OnPointerMove(event);
-
-
             //Raycaster
             raycaster.setFromCamera(pointer, cameraArray[CameraIndex.index]);
             const intersects = raycaster.intersectObjects(scene.children);
             if (intersects.length > 0) {
                 let collision = intersects[0];
-                if(collision.object.tags['floatable']){
-                    console.log('Clicked', floatables[collision.object.tags['floatableIndex']]);
-                    floatables[collision.object.tags['floatableIndex']].Focus();
+                
+                
+                //DisplayWindow
+                if(collision.object.tags['floatable'] ){
+                    if(!PageManager.isWindowShown){
+                        const floatable = floatables[collision.object.tags['floatableIndex']];
+                        floatable.Focus();
+                        console.log(floatable.page);
+                        pageManager.Update(floatable.page);
+                    }
                 }
 
                 
@@ -111,7 +114,7 @@ export default class ThreeScene extends Component{
 
                     /**
                     For some reason raycast intersect world pos is flipped on Z axis 
-                    This Inverts Backflip that back
+                    This Inverts that back
                     TODO LOOK INTO THIS 
                     **/
 
@@ -155,7 +158,7 @@ export default class ThreeScene extends Component{
 /**
  * Textures 
  */
-        const carpetTexture = textureLoader.load('/textures/carpet.jpg');
+
 /**
 * Geometry
 * */
@@ -195,15 +198,15 @@ export default class ThreeScene extends Component{
         bathWater.position.set(13.3, -2.5, 10);
         bathWater.rotateX(-0.5 * Math.PI);
         
-       // scene.add(bathWater);
+        scene.add(bathWater);
 /**
 * Floatables
 */
-        const duck = new Floatable('/models/Duck.glb', 0, 0.5, null, scene, bathWater);
-        const duck1 = new Floatable('/models/Devil_Duck.glb', 1, 0.5, null, scene, bathWater);
-        const duck2 = new Floatable('/models/G_Duck.glb', 2, 0.5, null, scene, bathWater);
+        const duck = new Floatable('/models/Duck.glb', 0, 0.5, DuckTest1, scene, bathWater);
+        //const duck1 = new Floatable('/models/Devil_Duck.glb', 1, 0.5, null, scene, bathWater);
+        //const duck2 = new Floatable('/models/G_Duck.glb', 2, 0.5, null, scene, bathWater);
 
-        const floatables = [duck, duck1, duck2];
+        const floatables = [duck];
         console.log(floatables);
 /**
 * Clock
@@ -256,5 +259,4 @@ export default class ThreeScene extends Component{
         );
     }
 }
-
 
