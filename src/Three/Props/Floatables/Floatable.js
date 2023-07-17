@@ -21,7 +21,7 @@ class Floatable {
         this.cameraIndex = null;
         
         this.cameraOffset = {
-            x: 3.41,
+            x: +3.41,
             y: 1.1,
             z: 1
         }
@@ -54,7 +54,8 @@ class Floatable {
              self.camera.position.x = self.model.position.x - self.cameraOffset.x;
              self.camera.position.z = self.model.position.z + self.cameraOffset.z;
          }
-    
+         
+         self.camera.lookAt(self.model.position);
         AddCamera(self.camera);
         self.cameraIndex = GetCameraIndex(self.camera);
     }
@@ -71,11 +72,7 @@ class Floatable {
 
     Focus(){
         if (!this.focused){
-            CameraIndex.index = this.cameraIndex;
-            PageManager.activePage = this.page;
-            PageManager.isWindowShown = true;
-
-            this.focused = true;
+            PageManager.Update(this.page, this.cameraIndex, this);
         }
     }
 }

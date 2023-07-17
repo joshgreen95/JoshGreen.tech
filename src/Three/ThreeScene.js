@@ -35,7 +35,7 @@ export default class ThreeScene extends Component{
 /**
  * Page Manager
  */
-        const pageManager = new PageManager();
+
 /**
  * Loaders
  */
@@ -89,6 +89,7 @@ export default class ThreeScene extends Component{
         }
 
         function OnPointerClick(event){
+            console.log(PageManager);
             //Fix for Mobile
             OnPointerMove(event);
             //Raycaster
@@ -103,8 +104,6 @@ export default class ThreeScene extends Component{
                     if(!PageManager.isWindowShown){
                         const floatable = floatables[collision.object.tags['floatableIndex']];
                         floatable.Focus();
-                        console.log(floatable.page);
-                        pageManager.Update(floatable.page);
                     }
                 }
 
