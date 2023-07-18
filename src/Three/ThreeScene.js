@@ -85,11 +85,12 @@ export default class ThreeScene extends Component{
         
         function OnPointerMove( event ){
             pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-            pointer.y = (event.clientY / window.innerHeight) * 2 - 1;
+            pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
         }
 
         function OnPointerClick(event){
-            console.log(PageManager);
+            scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000));
+
             //Fix for Mobile
             OnPointerMove(event);
             //Raycaster
@@ -98,7 +99,8 @@ export default class ThreeScene extends Component{
             if (intersects.length > 0) {
                 let collision = intersects[0];
                 
-                
+                if(!collision.object.tags){ return; }
+
                 //DisplayWindow
                 if(collision.object.tags['floatable'] ){
                     if(!PageManager.isWindowShown){
@@ -107,21 +109,10 @@ export default class ThreeScene extends Component{
                     }
                 }
 
-                
+
                 if (collision.object.tags['needsUVCoords']) {
                     collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
-
-                    /**
-                    For some reason raycast intersect world pos is flipped on Z axis 
-                    This Inverts that back
-                    TODO LOOK INTO THIS 
-                    **/
-
-                    const adjustedX = collision.point.x;
-                    const adjustedZ = (1 - (collision.point.z / collision.object.geometry.parameters.height)) * collision.object.geometry.parameters.height;
-                    
-                    collision.object.material.uniforms.uRaycastIntersectWorld.value = new THREE.Vector3(adjustedX, 0, adjustedZ);
-                    console.log(collision.object.material.uniforms.uRaycastIntersectWorld.value);
+                    collision.object.material.uniforms.uRaycastIntersectWorld.value = new THREE.Vector3(collision.point.x, 0, collision.point.z);
                     timeSinceLastMove = clock.getElapsedTime(); }
             }
         }

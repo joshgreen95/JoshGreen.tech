@@ -27,7 +27,7 @@ void main(){
     float timePercentage = (1.0 - (clampedTime / uDecayTime));
     float adjustedAmplitude = timePercentage * uWaveAmplitude;
 
-    vec2 distanceFromIntersect = vec2(distance(uRaycastIntersect.x, uv.x) * uWaterSize.x * waveScale, distance(1.0 - uRaycastIntersect.y, uv.y) * uWaterSize.y * waveScale);
+    vec2 distanceFromIntersect = vec2(distance(uRaycastIntersect.x, uv.x) * uWaterSize.x * waveScale, distance(uRaycastIntersect.y, uv.y) * uWaterSize.y * waveScale);
 
     vec2 squaredDistance = SquareVec2(distanceFromIntersect);
     float sumSquaredDistance = squaredDistance.x + squaredDistance.y;

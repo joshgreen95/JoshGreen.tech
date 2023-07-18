@@ -17,6 +17,7 @@ class Floatable {
         this.scene = scene;
         this.waterMesh = waterMesh;
         this.model = LoadGLTFScene(this.scene, this.modelRef, this.Instantiate, this);
+        this.hitbox = new THREE.Mesh(new THREE.BoxGeometry(2,2,2), new THREE.MeshBasicMaterial({color: 0xffffff}));
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.cameraIndex = null;
         
@@ -38,7 +39,14 @@ class Floatable {
         //Random Placement;
         self.Place();
 
-        
+        //hitbox
+        self.hitbox.position.set(self.model.position.x, self.model.position.y, self.model.position.z);
+       // AssignTagToScene(self.hitbox, 'floatable', true);
+       // AssignTagToScene(self.hitbox, 'floatableIndex', self.floatableIndex);
+        console.log(self.hitbox);
+        self.scene.add(self.hitbox);
+
+
         //Camera Management
         //Is Camera on left or right side
          self.camera.position.y = self.model.position.y + self.cameraOffset.y;
