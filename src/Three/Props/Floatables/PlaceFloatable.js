@@ -4,7 +4,7 @@ function PlaceRandomly(model, waterMesh) {
     const waterWidth = waterMesh.geometry.parameters.width;
     const waterHeight = waterMesh.geometry.parameters.height;
 
-    const boundaryOffset = 20;
+    const boundaryOffset = 3;
     const offsetWidth = waterWidth - boundaryOffset;
     const offsetHeight = waterHeight - boundaryOffset
 

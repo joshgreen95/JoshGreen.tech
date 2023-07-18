@@ -21,9 +21,9 @@ class Floatable {
         this.cameraIndex = null;
         
         this.cameraOffset = {
-            x: +3.41,
-            y: 1.1,
-            z: 1
+            x: 3.41,
+            y: 2,
+            z: 3.41
         }
         
         this.focused = false;

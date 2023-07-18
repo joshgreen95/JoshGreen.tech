@@ -23,8 +23,9 @@ import { Floatable } from "./Props/Floatables/Floatable";
 import { PageManager } from "../React/Logic/PageManager";
 
 //JSX Components
-import TestScreen from "../React/Logic/Components/TestScreen";
-import DuckTest1 from "../React/Logic/Components/DuckTest1";
+import DuckTest from "../React/Pages/DuckTest";
+import DevilDuckTest from "../React/Pages/DevilDuckTest.jsx";
+import GimpDuckTest from "../React/Pages/GimpDuckTest.jsx";
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -89,8 +90,6 @@ export default class ThreeScene extends Component{
         }
 
         function OnPointerClick(event){
-            scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000));
-
             //Fix for Mobile
             OnPointerMove(event);
             //Raycaster
@@ -143,7 +142,7 @@ export default class ThreeScene extends Component{
 /**
  * Models
  */
-        //const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
+        const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
 
 /**
  * Textures 
@@ -152,7 +151,7 @@ export default class ThreeScene extends Component{
 /**
 * Geometry
 * */
-        const bathWaterGeometry = new THREE.PlaneGeometry(10, 22, 100, 100);
+        const bathWaterGeometry = new THREE.PlaneGeometry(12, 25, 100, 100);
 /**
 * Materials
 */
@@ -192,11 +191,11 @@ export default class ThreeScene extends Component{
 /**
 * Floatables
 */
-        const duck = new Floatable('/models/Duck.glb', 0, 0.5, DuckTest1, scene, bathWater);
-        //const duck1 = new Floatable('/models/Devil_Duck.glb', 1, 0.5, null, scene, bathWater);
-        //const duck2 = new Floatable('/models/G_Duck.glb', 2, 0.5, null, scene, bathWater);
+        const duck = new Floatable('/models/Duck.glb', 0, 0.5, DuckTest, scene, bathWater);
+        const devilDuck = new Floatable('/models/Devil_Duck.glb', 1, 0.5, DevilDuckTest, scene, bathWater);
+        const gimpDuck = new Floatable('/models/G_Duck.glb', 2, 0.5, GimpDuckTest, scene, bathWater);
 
-        const floatables = [duck];
+        const floatables = [duck, devilDuck, gimpDuck];
         console.log(floatables);
 /**
 * Clock
@@ -206,7 +205,7 @@ export default class ThreeScene extends Component{
 /**
  * Lights
  */
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
         scene.add(ambientLight);
 
 /**

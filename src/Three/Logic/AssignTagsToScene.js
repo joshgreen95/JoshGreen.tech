@@ -19,7 +19,7 @@ function InitializeTags(scene){
  */
 
 function AssignTagToScene(scene, tag, val){
-    if (scene.children.length == 0){
+    if (scene.children.length === 0){
         if (scene && !('tags' in scene)) {
             scene['tags'] = {}
         }
