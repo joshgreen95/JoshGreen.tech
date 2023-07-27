@@ -1,8 +1,6 @@
 //Core
 import React, { Component} from "react";
-import { createRoot } from 'react-dom/client';
 import * as THREE from 'three';
-import * as dat from 'dat.gui';
 
 //Controls
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';

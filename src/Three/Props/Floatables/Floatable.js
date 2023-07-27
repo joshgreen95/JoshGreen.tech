@@ -3,7 +3,6 @@ import { LoadGLTFScene } from "../ImportModel";
 import { AnimateFloatable } from "./AnimateFloatables";
 import { PlaceRandomly } from "./PlaceFloatable";
 import { AddCamera, GetCameraIndex } from '../../Camera/InitializeCameraArray';
-import { CameraIndex } from '../../Camera/CameraIndex';
 import { AssignTagToScene } from '../../Logic/AssignTagsToScene';
 import { PageManager } from '../../../React/Logic/PageManager';
 
