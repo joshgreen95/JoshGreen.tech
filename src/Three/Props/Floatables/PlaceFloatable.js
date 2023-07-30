@@ -18,4 +18,12 @@ function PlaceRandomly(model, waterMesh) {
     model.rotation.y = rotationalFactor / 2 - ((Math.random() * rotationalFactor));
 }
 
-export { PlaceRandomly };
+function PlaceToiletFloatable(model){
+    model.position.x = -12.7;
+    model.position.y = -4.6;
+    model.position.z = 1.1;
+
+    model.rotation.y = 0.5 * 3.14;
+}
+
+export { PlaceRandomly, PlaceToiletFloatable };

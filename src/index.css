@@ -8,11 +8,11 @@ button{
   width: 200px;
 }
 
-.buttonContainer{
+.navButtonContainer{
   position: fixed;
 }
 
-.windowBox{
+.windowBoxContainer{
   position: fixed;
   display: flexbox;
   align-items: start;

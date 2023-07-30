@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { LoadGLTFScene } from "../ImportModel";
 import { AnimateFloatable } from "./AnimateFloatables";
-import { PlaceRandomly } from "./PlaceFloatable";
+import { PlaceRandomly, PlaceToiletFloatable } from "./PlaceFloatable";
 import { AddCamera, GetCameraIndex } from '../../Camera/InitializeCameraArray';
 import { AssignTagToScene } from '../../Logic/AssignTagsToScene';
 import { PageManager } from '../../../React/Logic/PageManager';
@@ -59,18 +59,26 @@ class Floatable {
     }
 
     Place() {
-        PlaceRandomly(this.model, this.waterMesh);
+        //If Index 0 then toilet duck FIX this as only allows one clickable object. Deffo need to extenuate this function to a clickable class
+        //too lazy tonight, should add clock or something. 
+        if(this.floatableIndex === 0){
+            PlaceToiletFloatable(this.model);
+        }
+        
+        if(this.waterMesh){
+            PlaceRandomly(this.model, this.waterMesh);
+        }
     }
 
     Float() {
-        if (this.model) {
+        if (this.model && this.waterMesh) {
             AnimateFloatable(this.model, this.waterMesh);
         }
     }
 
     Focus(){
         if (!this.focused){
-            PageManager.Update(this.page, this.cameraIndex, this);
+            PageManager.ShowOverlay(this.page, this.cameraIndex, this);
         }
     }
 }

@@ -29,23 +29,6 @@ import { SceneSetter } from "./Props/SceneSetter.js";
 export default class ThreeScene extends Component{
     componentDidMount(){
 /**
- * HTML Elements
- */
-
-/**
- * Page Manager
- */
-
-/**
- * Loaders
- */
-
-/**
- * GUI
- */
-    //const gui = new dat.GUI();
-        
-/**
  * Renderer
  */
         const renderer = new THREE.WebGLRenderer();
@@ -70,7 +53,6 @@ export default class ThreeScene extends Component{
 /**
  * Controls
  */
-
         const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
@@ -98,6 +80,12 @@ export default class ThreeScene extends Component{
                 let collision = intersects[0];
                 
                 if(!collision.object.tags){ return; }
+
+                //Disables sceneSetter Collision when focused.
+                //TODO REFINE
+                if(!PageManager.isCameraCenter && collision.object.tags['sceneSetter']){
+                    collision = intersects[1];
+                }
 
                 //DisplayWindow
                 if(collision.object.tags['floatable'] ){
@@ -148,10 +136,6 @@ export default class ThreeScene extends Component{
         const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
 
 /**
- * Textures 
- */
-
-/**
 * Geometry
 * */
         const bathWaterGeometry = new THREE.PlaneGeometry(12, 25, 100, 100);
@@ -191,22 +175,30 @@ export default class ThreeScene extends Component{
         bathWater.rotateX(-0.5 * Math.PI);
         
         scene.add(bathWater);
+
+
+/**
+ * Toilet Object
+ */
+        const toiletFloatable = new Floatable('/models/Duck.glb', 0, 0.95, DuckTest, scene, null);
+        
+
 /**
 * Floatables
 */
-        const duck = new Floatable('/models/Duck.glb', 0, 0.5, DuckTest, scene, bathWater);
-        const devilDuck = new Floatable('/models/Devil_Duck.glb', 1, 0.5, DevilDuckTest, scene, bathWater);
-        const gimpDuck = new Floatable('/models/G_Duck.glb', 2, 0.5, GimpDuckTest, scene, bathWater);
+        const duck = new Floatable('/models/Duck.glb', 1, 0.5, DuckTest, scene, bathWater);
+        const devilDuck = new Floatable('/models/Devil_Duck.glb', 2, 0.5, DevilDuckTest, scene, bathWater);
+        const gimpDuck = new Floatable('/models/G_Duck.glb', 3, 0.5, GimpDuckTest, scene, bathWater);
 
-        const floatables = [duck, devilDuck, gimpDuck];
-        console.log(floatables);
+        const floatables = [toiletFloatable, duck, devilDuck, gimpDuck];
 
 /**
  * Scene Setters
  */
-        const bathSceneSetter = new SceneSetter(new THREE.Vector3(5,5,5), new THREE.Vector3(1,1,1), scene, 1, 0);
+        const bathSceneSetter = new SceneSetter(new THREE.Vector3(15, 12, 40), new THREE.Vector3(12.5, -5, 10), scene, 1, 0);
+        const toiletSceneSetter = new SceneSetter(new THREE.Vector3(15, 15, 15), new THREE.Vector3(-10, -1, 1), scene, 2, 1);
 
-        const sceneSetters = [bathSceneSetter];
+        const sceneSetters = [bathSceneSetter, toiletSceneSetter];
 
 /**
 * Clock
