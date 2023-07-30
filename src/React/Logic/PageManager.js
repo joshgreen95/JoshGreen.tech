@@ -2,18 +2,21 @@ import { createRoot } from "react-dom/client";
 import { CameraIndex } from "../../Three/Camera/CameraIndex";
 
 let PageManager = {
-        activeCamera: CameraIndex.index,
+        activeCamera: null,
         activePage: null,
         isWindowShown: false,
+        navButtonBox: document.getElementById('navButton'),
         windowBox: null,
         lastAccessedObject: null,
-        lastCamera: null
+        lastCamera: null,
+        isHomeScreenActive: true
     ,
     
     Update(page, cameraIndex, invoker){
         this.windowBox = document.getElementById('windowBox')
 
         if(!this.isWindowShown){
+            this.activeCamera = CameraIndex.index;
             this.lastCamera = this.activeCamera;
             this.activeCamera = cameraIndex;
             CameraIndex.index = this.activeCamera;
@@ -27,7 +30,11 @@ let PageManager = {
         }
     },
 
-    Close(){
+    UpdateSubScene(){
+        
+    },
+
+    CloseOverlayWindow(){
         createRoot(this.windowBox).unmount();
         
         this.isWindowShown = false

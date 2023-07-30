@@ -24,6 +24,7 @@ import { PageManager } from "../React/Logic/PageManager";
 import DuckTest from "../React/Pages/DuckTest";
 import DevilDuckTest from "../React/Pages/DevilDuckTest.jsx";
 import GimpDuckTest from "../React/Pages/GimpDuckTest.jsx";
+import { SceneSetter } from "./Props/SceneSetter.js";
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -106,11 +107,15 @@ export default class ThreeScene extends Component{
                     }
                 }
 
-
                 if (collision.object.tags['needsUVCoords']) {
-                    collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
-                    collision.object.material.uniforms.uRaycastIntersectWorld.value = new THREE.Vector3(collision.point.x, 0, collision.point.z);
-                    timeSinceLastMove = clock.getElapsedTime(); }
+                        collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
+                        collision.object.material.uniforms.uRaycastIntersectWorld.value = new THREE.Vector3(collision.point.x, 0, collision.point.z);
+                        timeSinceLastMove = clock.getElapsedTime(); }
+                        
+                if(collision.object.tags['sceneSetter']){
+                    const sceneSetter = sceneSetters[collision.object.tags['sceneSetterIndex']]
+                    sceneSetter.Focus();
+                }
             }
         }
 /**
@@ -195,6 +200,14 @@ export default class ThreeScene extends Component{
 
         const floatables = [duck, devilDuck, gimpDuck];
         console.log(floatables);
+
+/**
+ * Scene Setters
+ */
+        const bathSceneSetter = new SceneSetter(new THREE.Vector3(5,5,5), new THREE.Vector3(1,1,1), scene, 1, 0);
+
+        const sceneSetters = [bathSceneSetter];
+
 /**
 * Clock
 */
