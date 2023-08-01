@@ -83,7 +83,7 @@ export default class ThreeScene extends Component{
 
                 //Disables sceneSetter Collision when focused.
                 //TODO REFINE
-                if(!PageManager.isCameraCenter && collision.object.tags['sceneSetter']){
+                if(!PageManager.isCameraCenter && (collision.object.tags['sceneSetter'] || collision.object.tags['ignore'])){
                     collision = intersects[1];
                 }
 

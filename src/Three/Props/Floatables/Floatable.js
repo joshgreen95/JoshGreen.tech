@@ -3,7 +3,7 @@ import { LoadGLTFScene } from "../ImportModel";
 import { AnimateFloatable } from "./AnimateFloatables";
 import { PlaceRandomly, PlaceToiletFloatable } from "./PlaceFloatable";
 import { AddCamera, GetCameraIndex } from '../../Camera/InitializeCameraArray';
-import { AssignTagToScene } from '../../Logic/AssignTagsToScene';
+import { AssignTagToScene, InitializeTags } from '../../Logic/AssignTagsToScene';
 import { PageManager } from '../../../React/Logic/PageManager';
 
 class Floatable {
@@ -20,11 +20,11 @@ class Floatable {
         this.cameraIndex = null;
         
         this.cameraOffset = {
-            x: 3.41,
+            x: 5,
             y: 2,
-            z: 3.41
+            z: 0
         }
-        
+
         this.focused = false;
     }
 
@@ -37,23 +37,30 @@ class Floatable {
         //Random Placement;
         self.Place();
 
+        const cameraTarget = new THREE.Vector3(
+            self.model.position.x + 0,
+            self.model.position.y - 1.5,
+            self.model.position.z
+        );
+            
         //Camera Management
         //Is Camera on left or right side
-         self.camera.position.y = self.model.position.y + self.cameraOffset.y;
-         //Left
-        console.log(self.model.position.x < self.waterMesh.position.x)
+        //Left
          if(self.model.position.x < self.waterMesh.position.x){
-             self.camera.position.x = self.model.position.x + self.cameraOffset.x;
-             self.camera.position.z = self.model.position.z + self.cameraOffset.z;
+            self.camera.position.x = self.model.position.x + self.cameraOffset.x;
+            self.camera.position.z = self.model.position.z + self.cameraOffset.z;
+
+            cameraTarget.z += 2.5
          } 
          //Right
          else {
-            
-             self.camera.position.x = self.model.position.x - self.cameraOffset.x;
-             self.camera.position.z = self.model.position.z + self.cameraOffset.z;
+            self.camera.position.x = self.model.position.x - self.cameraOffset.x;
+            self.camera.position.z = self.model.position.z + self.cameraOffset.z;
+
+            cameraTarget.z -= 2.5;
          }
-         
-         self.camera.lookAt(self.model.position);
+        self.camera.lookAt(cameraTarget);
+        
         AddCamera(self.camera);
         self.cameraIndex = GetCameraIndex(self.camera);
     }

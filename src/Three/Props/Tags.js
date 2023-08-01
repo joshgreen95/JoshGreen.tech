@@ -1,4 +1,5 @@
 export const tags = [
     'needsUVCoords',
-    'floatable'
+    'floatable',
+    'sceneSetter'
 ]
