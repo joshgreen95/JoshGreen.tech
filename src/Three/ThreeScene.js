@@ -6,8 +6,10 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 //Shaders
-import backgroundVertexShader from './shaders/background/vertex.glsl';
-import backgroundFragmentShader from './shaders/background/fragment.glsl';
+import bathwaterVertexShader from './shaders/Bathwater/vertex.glsl';
+import bathwaterFragmentShader from './shaders/Bathwater/fragment.glsl';
+import skyVertexShader from './shaders/Sky/vertex.glsl';
+import skyFragmentShader from './shaders/Sky/fragment.glsl';
 
 //Logic
 import { LoadGLTFScene } from "./Props/ImportModel.js";
@@ -25,6 +27,8 @@ import DuckTest from "../React/Pages/DuckTest";
 import DevilDuckTest from "../React/Pages/DevilDuckTest.jsx";
 import GimpDuckTest from "../React/Pages/GimpDuckTest.jsx";
 import { SceneSetter } from "./Props/SceneSetter.js";
+import { TimeOfDay } from "./Scene/DayNightCycle.js";
+import { InitializeTags } from "./Logic/AssignTagsToScene.js";
 
 export default class ThreeScene extends Component{
     componentDidMount(){
@@ -40,10 +44,15 @@ export default class ThreeScene extends Component{
         const canvas = document.getElementById('renderContainer').appendChild(renderer.domElement);
         
 /**
+ * Day/Night Cycle
+ */
+        const timeOfDay = new TimeOfDay();
+        console.log(timeOfDay);
+/**
  * Scene    
 */ 
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x953506B)
+        scene.background = new THREE.Color(timeOfDay.horizonColor);
         
 /**
  * Camera
@@ -51,9 +60,9 @@ export default class ThreeScene extends Component{
         const cameraArray = InitializeCameraArray(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 /**
- * Controls
+ * Debug Controls
  */
-        const controls = new OrbitControls(cameraArray[0], renderer.domElement);
+        //const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
  */
@@ -139,14 +148,14 @@ export default class ThreeScene extends Component{
 * Geometry
 * */
         const bathWaterGeometry = new THREE.PlaneGeometry(12, 25, 100, 100);
+        const backgroundGeometry = new THREE.PlaneGeometry(100, 35, 5, 5);
 /**
 * Materials
 */
         var timeSinceLastMove = 0;
-
         const bathWaterMaterial = new THREE.ShaderMaterial({
-            vertexShader: backgroundVertexShader,
-            fragmentShader: backgroundFragmentShader,
+            vertexShader: bathwaterVertexShader,
+            fragmentShader: bathwaterFragmentShader,
             uniforms: {
                 uWaveAmplitude: { value: 1 },
                 uWaveDampening: { value: 0.2 },
@@ -165,6 +174,16 @@ export default class ThreeScene extends Component{
                 uColorMultiplier: { value: 5 },
             }
         });
+
+        const backgroundMaterial = new THREE.ShaderMaterial({
+            vertexShader: skyVertexShader,
+            fragmentShader: skyFragmentShader,
+            uniforms: {
+                uSkyColor: { value: new THREE.Color(timeOfDay.skyColor) },
+                uHorizonColor: { value: new THREE.Color(timeOfDay.horizonColor) },
+                uGroundColor: { value: new THREE.Color(timeOfDay.groundColor) },
+            }
+        });
 /**
  * Mesh
  */
@@ -173,9 +192,12 @@ export default class ThreeScene extends Component{
         bathWater.tags['needsUVCoords'] = true;
         bathWater.position.set(13.3, -2.5, 10);
         bathWater.rotateX(-0.5 * Math.PI);
-        
-        scene.add(bathWater);
 
+        const backgroundGradient = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
+        InitializeTags(backgroundGradient);
+        backgroundGradient.position.set(0, 15, -35);
+        
+        scene.add(bathWater, backgroundGradient);
 
 /**
  * Toilet Object
@@ -208,24 +230,32 @@ export default class ThreeScene extends Component{
 /**
  * Lights
  */
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-        scene.add(ambientLight);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0);
+        const skyLight = new THREE.HemisphereLight(timeOfDay.skyColor, timeOfDay.groundColor, 1);
+        const lightHelper = new THREE.HemisphereLightHelper(skyLight, 3);
+        ambientLight.position.y = 19;
+        scene.add(ambientLight, lightHelper, skyLight);
 
 /**
  * Loop
  */
+//Place counter to stop Time  update every frame
         function Tick() {
             requestAnimationFrame(Tick);
+                        
+            timeOfDay.UpdateHour();
+
             UpdateWaterShader();
+
+            //Get Active Camera;
             UpdateCameraArray();
+            renderer.render(scene, cameraArray[CameraIndex.index]);
             
             //Animate Floatables
             for(let i = 0; i < floatables.length; i++){
                 floatables[i].Float();
             }
-
-            renderer.render(scene, cameraArray[CameraIndex.index]);
-            
+            //Animate Bathwater
             function UpdateWaterShader() {
                 const elapsedTime = clock.getElapsedTime();
                 const timeDifference = elapsedTime - timeSinceLastMove;
