@@ -230,8 +230,8 @@ export default class ThreeScene extends Component{
 /**
  * Lights
  */
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0);
-        const skyLight = new THREE.HemisphereLight(timeOfDay.skyColor, timeOfDay.groundColor, 1);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        const skyLight = new THREE.HemisphereLight(timeOfDay.skyColor, timeOfDay.groundColor, 0.4);
         const lightHelper = new THREE.HemisphereLightHelper(skyLight, 3);
         ambientLight.position.y = 19;
         scene.add(ambientLight, lightHelper, skyLight);
