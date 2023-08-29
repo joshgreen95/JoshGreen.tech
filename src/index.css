@@ -1,6 +1,9 @@
+*{
+  font-family: sans-serif;
+}
+
 body {
   margin: 0;
-
 }
 
 button{
@@ -13,10 +16,168 @@ button{
 }
 
 .windowBoxContainer{
+  height: 85vh;
+  width: 50vw;
   position: fixed;
-  display: flexbox;
-  align-items: start;
+  margin: 7.5vh 0vh 15vw 7.5vh;
+  
+  display: flex;
+  align-items: flex-start;
   justify-content: center;
-  margin: 15vh;
-  background-color: grey;
+  
+  background-color: transparent;
+
+}
+
+/* Content Windows */
+.windowBox{
+  height: 100%;
+  width: 100%;
+
+  background-color: #DFF1FF;
+  border: 3px outset #F5FBFF;
+}
+
+
+.navBanner{
+  height: 2.2vh;
+  margin: 0.3vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: linear-gradient(35deg, #E3CEFF 50%, #DFF1FF 100%);
+  border: 2px outset #F5FBFF;
+}
+
+
+.navBanner h1{
+  width: 48vw;
+  margin-left: 0.5vw;
+
+  font-size: 18px;
+  text-align: left;
+  flex-direction: row;
+  color:#4F8AB8;
+}
+
+.navBanner button {
+  height: 90%;
+  width: 1.5vw;
+
+  margin-right: 0.2%;
+  padding: 0%;
+  
+  text-align: center;
+
+  background-color: #F5FBFF;
+  border: 2px outset #F5FBFF;
+}
+
+.navBanner button:active {
+
+  border: 2px inset #F5FBFF;
+}
+
+
+/*Content*/
+.contentBox{
+  height: 95%;
+  margin: 5px;
+
+  background: #FFFFFF;
+  border: 2px inset #FFFFFF;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.contentBox h1 {
+  margin: 0;
+}
+
+
+/*MOBILE*/
+@media only screen and (max-width: 600px) {
+
+  .windowBoxContainer {
+    height: 95vh;
+    width: 95vw;
+    position: fixed;
+    margin: 5vh 0vh 5vw 5vh;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    background-color: transparent;
+
+  }
+
+  /* Content Windows */
+  .windowBox {
+    height: 100%;
+    width: 100%;
+
+    background-color: #DFF1FF;
+    border: 3px outset #F5FBFF;
+  }
+
+
+  .navBanner {
+    height: 2.2vh;
+    margin: 0.3vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: linear-gradient(35deg, #E3CEFF 50%, #DFF1FF 100%);
+    border: 2px outset #F5FBFF;
+  }
+
+
+  .navBanner h1 {
+    width: 48vw;
+    margin-left: 0.5vw;
+
+    font-size: 18px;
+    text-align: left;
+    flex-direction: row;
+    color: #4F8AB8;
+  }
+
+  .navBanner button {
+    height: 90%;
+    width: 1.5vw;
+
+    margin-right: 0.2%;
+    padding: 0%;
+
+    text-align: center;
+
+    background-color: #F5FBFF;
+    border: 2px outset #F5FBFF;
+  }
+
+  .navBanner button:active {
+
+    border: 2px inset #F5FBFF;
+  }
+
+
+  /*Content*/
+  .contentBox {
+    height: 95%;
+    margin: 5px;
+
+    background: #FFFFFF;
+    border: 2px inset #FFFFFF;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .contentBox h1 {
+    margin: 0;
+  }
 }
