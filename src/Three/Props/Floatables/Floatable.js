@@ -6,6 +6,7 @@ import { AddCamera, GetCameraIndex } from '../../Camera/InitializeCameraArray';
 import { AssignTagToScene, InitializeTags } from '../../Logic/AssignTagsToScene';
 import { PageManager } from '../../../React/Logic/PageManager';
 
+const floatablePositions = [];
 class Floatable {
     constructor(modelRef, floatableIndex, modelScale, pageRef, scene, waterMesh) {
         this.modelRef = modelRef;
@@ -73,7 +74,7 @@ class Floatable {
         }
         
         if(this.waterMesh){
-            PlaceRandomly(this.model, this.waterMesh);
+            PlaceRandomly(this.model, this.waterMesh, floatablePositions);
         }
     }
 

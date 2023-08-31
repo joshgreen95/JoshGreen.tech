@@ -1,4 +1,7 @@
-function PlaceRandomly(model, waterMesh) {
+function PlaceRandomly(model, waterMesh, positionsArray) {
+    let validPlacement = false;
+    const validPlacementDistance = 5;
+
     const waterPosX = waterMesh.position.x;
     const waterPosZ = waterMesh.position.z;
     const waterWidth = waterMesh.geometry.parameters.width;
@@ -6,13 +9,33 @@ function PlaceRandomly(model, waterMesh) {
 
     const boundaryOffset = 5;
     const offsetWidth = waterWidth - boundaryOffset;
-    const offsetHeight = waterHeight - boundaryOffset
+    const offsetHeight = waterHeight - boundaryOffset;
 
-    let xPos = (((Math.random() * (offsetWidth)) - (offsetWidth / 2)) + waterPosX);
-    let zPos = (((Math.random() * offsetHeight) - (offsetHeight / 2)) + waterPosZ);
+    while (!validPlacement) {
+        let xPos = (((Math.random() * (offsetWidth)) - (offsetWidth / 2)) + waterPosX);
+        let zPos = (((Math.random() * offsetHeight) - (offsetHeight / 2)) + waterPosZ);
 
-    model.position.x = xPos;
-    model.position.z = zPos;
+        model.position.x = xPos;
+        model.position.z = zPos;
+
+        if (positionsArray.length === 0) {
+            validPlacement = true;
+        }
+
+        let validCount = 0;
+
+        for (let i = 0; i < positionsArray.length; i++) {
+            console.log(model.position.distanceTo(positionsArray[i]));
+            if (model.position.distanceTo(positionsArray[i]) > validPlacementDistance) {
+                validCount ++;
+            }
+            
+            if(validCount === positionsArray.length){
+                validPlacement = true;
+            }
+        }
+    }
+    positionsArray.push(model.position);
 
     const rotationalFactor = Math.PI * 0.75;
     model.rotation.y = rotationalFactor / 2 - ((Math.random() * rotationalFactor));
