@@ -15,6 +15,8 @@ import skyFragmentShader from './shaders/Sky/fragment.glsl';
 import { LoadGLTFScene } from "./Props/ImportModel.js";
 import { InitializeCameraArray, UpdateCameraArray } from "./Camera/InitializeCameraArray.js";
 import { CameraIndex } from './Camera/CameraIndex.js'
+import { TimeOfDay } from "./Scene/DayNightCycle.js";
+import { SceneSetter } from "./Props/SceneSetter.js";
 
 //Props
 import { Floatable } from "./Props/Floatables/Floatable";
@@ -26,8 +28,6 @@ import { PageManager } from "../React/Logic/PageManager";
 import DuckTest from "../React/Pages/DuckTest";
 import DevilDuckTest from "../React/Pages/DevilDuckTest.jsx";
 import GimpDuckTest from "../React/Pages/GimpDuckTest.jsx";
-import { SceneSetter } from "./Props/SceneSetter.js";
-import { TimeOfDay } from "./Scene/DayNightCycle.js";
 import { InitializeTags } from "./Logic/AssignTagsToScene.js";
 
 export default class ThreeScene extends Component{
@@ -43,6 +43,19 @@ export default class ThreeScene extends Component{
  */
         const canvas = document.getElementById('renderContainer').appendChild(renderer.domElement);
         
+/**
+ * Loading Manager
+ */
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    const loadingManager = new THREE.LoadingManager(() => {
+        loadingScreen.classList.add('hidden');
+        loadingScreen.addEventListener('transitionend', transitionEnd);
+        });
+
+    function transitionEnd(){
+        loadingScreen.remove();
+    }
 /**
  * Day/Night Cycle
  */
@@ -67,7 +80,6 @@ export default class ThreeScene extends Component{
  * Raycaster
  */
         const raycaster = new THREE.Raycaster();
-        
         
 /**
  * Pointer
@@ -142,7 +154,7 @@ export default class ThreeScene extends Component{
 /**
  * Models
  */
-        const bathroom = LoadGLTFScene(scene, '/models/Scene.glb');
+        const bathroom = LoadGLTFScene(scene, '/models/Scene.glb', null, null, loadingManager);
 
 /**
 * Geometry
