@@ -25,9 +25,9 @@ import { Floatable } from "./Props/Floatables/Floatable";
 import { PageManager } from "../React/Logic/PageManager";
 
 //JSX Components
-import DuckTest from "../React/Pages/DuckTest";
-import DevilDuckTest from "../React/Pages/DevilDuckTest.jsx";
-import GimpDuckTest from "../React/Pages/GimpDuckTest.jsx";
+import DuckTest from "../React/Pages/PortfolioContent/DuckTest";
+import DevilDuckTest from "../React/Pages/PortfolioContent/DevilDuckTest.jsx";
+import GimpDuckTest from "../React/Pages/PortfolioContent/GimpDuckTest.jsx";
 import { InitializeTags } from "./Logic/AssignTagsToScene.js";
 
 export default class ThreeScene extends Component{
@@ -42,7 +42,10 @@ export default class ThreeScene extends Component{
  * Canvas
  */
         const canvas = document.getElementById('renderContainer').appendChild(renderer.domElement);
-        
+/**
+ * Page Manager
+ */
+    PageManager.InitializeRoots();
 /**
  * Loading Manager
  */
@@ -149,7 +152,11 @@ export default class ThreeScene extends Component{
             // Update renderer
             renderer.setSize(sizes.width, sizes.height);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        });
+
+            // Mobile Mode
+            PageManager.isMobile = ((sizes.width / sizes.height) < 1);
+            console.log(PageManager.isMobile);
+        })
         
 /**
  * Models
