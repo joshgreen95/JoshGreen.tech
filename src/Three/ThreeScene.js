@@ -38,14 +38,48 @@ export default class ThreeScene extends Component{
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
+
 /**
  * Canvas
  */
         const canvas = document.getElementById('renderContainer').appendChild(renderer.domElement);
+
+/**
+ * Camera
+ */
+        const cameraArray = InitializeCameraArray(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+/**
+ * Sizes
+ */
+        const sizes = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+
+        window.addEventListener('resize', () => {
+            // Update sizes
+            sizes.width = window.innerWidth;
+            sizes.height = window.innerHeight;
+            // Update camera
+            cameraArray.forEach((camera) => {
+                camera.aspect = sizes.width / sizes.height;
+                camera.updateProjectionMatrix();
+            })
+            // Update renderer
+            renderer.setSize(sizes.width, sizes.height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            // Mobile Mode
+            PageManager.isMobile = ((sizes.width / sizes.height) < 1);
+            console.log(PageManager.isMobile);
+        })
+
 /**
  * Page Manager
  */
-    PageManager.InitializeRoots();
+        PageManager.isMobile = ((sizes.width / sizes.height) < 1);
+        PageManager.InitializeRoots();
+
 /**
  * Loading Manager
  */
@@ -59,22 +93,19 @@ export default class ThreeScene extends Component{
     function transitionEnd(){
         loadingScreen.remove();
     }
+
 /**
  * Day/Night Cycle
  */
         const timeOfDay = new TimeOfDay();
         console.log(timeOfDay);
+
 /**
  * Scene    
 */ 
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(timeOfDay.horizonColor);
         
-/**
- * Camera
- */
-        const cameraArray = InitializeCameraArray(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-
 /**
  * Debug Controls
  */
@@ -130,34 +161,6 @@ export default class ThreeScene extends Component{
                 }
             }
         }
-/**
- * Sizes
- */
-        const sizes = {
-            width: window.innerWidth,
-            height: window.innerHeight
-        };
-        
-        window.addEventListener('resize', () => {
-            // Update sizes
-            sizes.width = window.innerWidth;
-            sizes.height = window.innerHeight;
-
-            // Update camera
-            cameraArray.forEach((camera) => {
-                camera.aspect = sizes.width / sizes.height;
-                camera.updateProjectionMatrix();
-            })
-
-            // Update renderer
-            renderer.setSize(sizes.width, sizes.height);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            // Mobile Mode
-            PageManager.isMobile = ((sizes.width / sizes.height) < 1);
-            console.log(PageManager.isMobile);
-        })
-        
 /**
  * Models
  */

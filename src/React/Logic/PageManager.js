@@ -43,6 +43,11 @@ let PageManager = {
             this.pages.navButton.root = createRoot(this.pages.navButton.container);
             this.pages.mobileNavMenu.root = createRoot(this.pages.mobileNavMenu.container);
             this.pages.windowBox.root = createRoot(this.pages.windowBox.container);
+
+            console.log(this.isMobile);
+            if(this.isMobile){
+                this.pages.mobileNavMenu.root.render(this.pages.mobileNavMenu.page());
+            }
         },
 
         BuildRoots(){
@@ -99,6 +104,11 @@ let PageManager = {
             this.isCameraCenter = false;
             this.activeCamera = cameraIndex;
             CameraIndex.index = this.activeCamera;
+
+            if(this.isMobile){
+                this.pages.mobileNavMenu.root.unmount();
+            }
+
             this.BuildRoots();
         },
         //For Upload
@@ -107,6 +117,11 @@ let PageManager = {
             this.isCameraCenter = true;
             this.activeCamera = 0;
             CameraIndex.index = this.activeCamera;
+            console.log(this.isMobile);
+            if(this.isMobile){
+                this.pages.mobileNavMenu.root.render(this.pages.mobileNavMenu.page());
+            }
+
             this.BuildRoots();
     },
 
