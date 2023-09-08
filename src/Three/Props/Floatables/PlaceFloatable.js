@@ -25,7 +25,6 @@ function PlaceRandomly(model, waterMesh, positionsArray) {
         let validCount = 0;
 
         for (let i = 0; i < positionsArray.length; i++) {
-            console.log(model.position.distanceTo(positionsArray[i]));
             if (model.position.distanceTo(positionsArray[i]) > validPlacementDistance) {
                 validCount ++;
             }
@@ -37,7 +36,7 @@ function PlaceRandomly(model, waterMesh, positionsArray) {
     }
     positionsArray.push(model.position);
 
-    const rotationalFactor = Math.PI * 0.75;
+    const rotationalFactor = Math.PI * 0.5;
     model.rotation.y = rotationalFactor / 2 - ((Math.random() * rotationalFactor));
 }
 

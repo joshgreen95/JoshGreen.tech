@@ -109,7 +109,7 @@ export default class ThreeScene extends Component{
 /**
  * Debug Controls
  */
-        //const controls = new OrbitControls(cameraArray[0], renderer.domElement);
+        const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
  */
@@ -258,6 +258,7 @@ export default class ThreeScene extends Component{
         ambientLight.position.y = 19;
         scene.add(ambientLight, lightHelper, skyLight);
 
+        scene.add(new THREE.AxesHelper(5));
 /**
  * Loop
  */

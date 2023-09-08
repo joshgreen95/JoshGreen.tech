@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { CameraIndex } from "../../Three/Camera/CameraIndex";
+import { UpdateCameraArray } from '../../Three/Camera/InitializeCameraArray.js';
 import NavButton from "../Pages/Components/NavButton.jsx";
 import MobileNavMenu from "../Pages/MobileNavMenu.jsx";
 
@@ -72,7 +73,7 @@ let PageManager = {
                     this.activeCamera = CameraIndex.index;
                     this.lastCamera = this.activeCamera;
                 }
-
+                console.log(UpdateCameraArray());
                 this.activePage = page;
                 this.pages.windowBox.root.render(page());
                 this.isWindowShown = true;
@@ -86,7 +87,6 @@ let PageManager = {
         },
 
         CloseOverlay() {
-
             this.pages.windowBox.root.unmount();
 
             this.isWindowShown = false
@@ -117,7 +117,7 @@ let PageManager = {
             this.isCameraCenter = true;
             this.activeCamera = 0;
             CameraIndex.index = this.activeCamera;
-            console.log(this.isMobile);
+
             if(this.isMobile){
                 this.pages.mobileNavMenu.root.render(this.pages.mobileNavMenu.page());
             }

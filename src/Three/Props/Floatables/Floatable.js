@@ -20,11 +20,7 @@ class Floatable {
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.cameraIndex = null;
         
-        this.cameraOffset = {
-            x: 5,
-            y: 2,
-            z: 0
-        }
+        this.cameraDistance = 5;
 
         this.focused = false;
     }
@@ -35,33 +31,22 @@ class Floatable {
 
         AssignTagToScene(self.model, 'floatable', true);
         AssignTagToScene(self.model, 'floatableIndex', self.floatableIndex);
+        
         //Random Placement;
         self.Place();
 
-        const cameraTarget = new THREE.Vector3(
-            self.model.position.x + 0,
-            self.model.position.y - 1.5,
-            self.model.position.z
-        );
-            
         //Camera Management
-        //Is Camera on left or right side
-        //Left
-         if(self.model.position.x < self.waterMesh.position.x){
-            self.camera.position.x = self.model.position.x + self.cameraOffset.x;
-            self.camera.position.z = self.model.position.z + self.cameraOffset.z;
-
-            cameraTarget.z += 2.5
-         } 
-         //Right
-         else {
-            self.camera.position.x = self.model.position.x - self.cameraOffset.x;
-            self.camera.position.z = self.model.position.z + self.cameraOffset.z;
-
-            cameraTarget.z -= 2.5;
-         }
-        self.camera.lookAt(cameraTarget);
+        //Model is facing right if rotation is positive
+        // Relationship between centering angle and model rotation is Y = 0.3750*X + 0.1438
+        let centeringAngle = 0.375 * self.model.rotation.y + 0.14;
         
+        centeringAngle *= Math.PI;
+        self.camera.position.x = self.model.position.x + (self.cameraDistance * (Math.sin(self.model.rotation.y)));
+        self.camera.position.z = self.model.position.z + (self.cameraDistance * (Math.cos(self.model.rotation.y)));
+
+        //I dont know why this works but it works
+        self.camera.rotation.y += centeringAngle;
+            
         AddCamera(self.camera);
         self.cameraIndex = GetCameraIndex(self.camera);
     }
