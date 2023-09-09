@@ -190,10 +190,15 @@ export default class ThreeScene extends Component{
                 uElapsedTime: { value: 0.0 },
                 uDecayTime: { value: 1.0 },
 
-                uSurfaceColor: { value: new THREE.Color(0xbcffee) },
-                uDepthColor: { value: new THREE.Color(0x9effe6) },
+                uDaySurfaceColor: { value: new THREE.Color(0xbcffee) },
+                uDayDepthColor: { value: new THREE.Color(0x9effe6) },
+                uNightSurfaceColor: { value: new THREE.Color(0x799fb8)},
+                uNightDepthColor: { value: new THREE.Color(0x5D8AA8) },
+
                 uColorOffset: { value: 0.08 },
                 uColorMultiplier: { value: 5 },
+
+                uIsNight: { value: timeOfDay.isNight},
             }
         });
 
@@ -224,15 +229,15 @@ export default class ThreeScene extends Component{
 /**
  * Toilet Object
  */
-        const toiletFloatable = new Floatable('/models/Duck.glb', 0, 0.95, DuckTest, scene, null);
+        const toiletFloatable = new Floatable('/models/Duck.glb', 0, 0.95, DuckTest, scene, null, true);
         
 
 /**
 * Floatables
 */
-        const duck = new Floatable('/models/Duck.glb', 1, 0.5, DuckTest, scene, bathWater);
-        const devilDuck = new Floatable('/models/Devil_Duck.glb', 2, 0.5, DevilDuckTest, scene, bathWater);
-        const gimpDuck = new Floatable('/models/G_Duck.glb', 3, 0.5, GimpDuckTest, scene, bathWater);
+        const duck = new Floatable('/models/Duck.glb', 1, 0.5, DuckTest, scene, bathWater, false);
+        const devilDuck = new Floatable('/models/Devil_Duck.glb', 2, 0.5, DevilDuckTest, scene, bathWater, false);
+        const gimpDuck = new Floatable('/models/G_Duck.glb', 3, 0.5, GimpDuckTest, scene, bathWater, false);
 
         const floatables = [toiletFloatable, duck, devilDuck, gimpDuck];
 

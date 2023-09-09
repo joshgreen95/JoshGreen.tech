@@ -8,7 +8,7 @@ import { PageManager } from '../../../React/Logic/PageManager';
 
 const floatablePositions = [];
 class Floatable {
-    constructor(modelRef, floatableIndex, modelScale, pageRef, scene, waterMesh) {
+    constructor(modelRef, floatableIndex, modelScale, pageRef, scene, waterMesh, isStatic) {
         this.modelRef = modelRef;
         this.floatableIndex = floatableIndex;
         this.page = pageRef;
@@ -19,7 +19,7 @@ class Floatable {
         this.model = LoadGLTFScene(this.scene, this.modelRef, this.Instantiate, this);
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.cameraIndex = null;
-        
+        this.isStatic = isStatic;
         this.cameraDistance = 5;
 
         this.focused = false;
@@ -34,27 +34,31 @@ class Floatable {
         
         //Random Placement;
         self.Place();
-
-        //Camera Management
-        //Model is facing right if rotation is positive
-        // Relationship between centering angle and model rotation is Y = 0.3750*X + 0.1438
-        let centeringAngle = 0.375 * self.model.rotation.y + 0.14;
         
-        centeringAngle *= Math.PI;
-        self.camera.position.x = self.model.position.x + (self.cameraDistance * (Math.sin(self.model.rotation.y)));
-        self.camera.position.z = self.model.position.z + (self.cameraDistance * (Math.cos(self.model.rotation.y)));
-
-        //I dont know why this works but it works
-        self.camera.rotation.y += centeringAngle;
+        if(!self.isStatic){
+            //Camera Management
+            //Model is facing right if rotation is positive
+            // Relationship between centering angle and model rotation is Y = 0.3750*X + 0.1438
+            let centeringAngle = 0.375 * self.model.rotation.y + 0.14;
             
-        AddCamera(self.camera);
-        self.cameraIndex = GetCameraIndex(self.camera);
+            centeringAngle *= Math.PI;
+            self.camera.position.x = self.model.position.x + (self.cameraDistance * (Math.sin(self.model.rotation.y)));
+            self.camera.position.z = self.model.position.z + (self.cameraDistance * (Math.cos(self.model.rotation.y)));
+
+            //I dont know why this works but it works
+            self.camera.rotation.y += centeringAngle;
+            
+            
+            AddCamera(self.camera);
+            
+            self.cameraIndex = GetCameraIndex(self.camera);
+        }
     }
 
     Place() {
         //If Index 0 then toilet duck FIX this as only allows one clickable object. Deffo need to extenuate this function to a clickable class
         //too lazy tonight, should add clock or something. 
-        if(this.floatableIndex === 0){
+        if(this.isStatic){
             PlaceToiletFloatable(this.model);
         }
         
