@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { CameraIndex } from "../../Three/Camera/CameraIndex";
 import { UpdateCameraArray } from '../../Three/Camera/InitializeCameraArray.js';
-import NavButton from "../Pages/Components/NavButton.jsx";
+import NavButton from "../Pages/Components/Window/NavBanner/NavButton.jsx";
 import MobileNavMenu from "../Pages/MobileNavMenu.jsx";
 
 let PageManager = {
@@ -60,9 +60,9 @@ let PageManager = {
         },
 
         ShowOverlay(page, cameraIndex, invoker){
-            if(this.isCameraCenter){ return; }
+            if(this.isCameraCenter && invoker !== 'ui'){ return; }
 
-            if(!this.isWindowShown){
+            if(!this.isWindowShown || invoker === 'ui'){
                 if(cameraIndex){
                     this.activeCamera = CameraIndex.index;
                     this.lastCamera = this.activeCamera;
@@ -78,10 +78,14 @@ let PageManager = {
                 this.pages.windowBox.root.render(page());
                 this.isWindowShown = true;
 
-                invoker['focused'] = true;
-                this.lastAccessedObject = invoker;
-
-                this.pages.navButton.root.unmount();
+                if (invoker && invoker !== 'ui'){
+                    invoker['focused'] = true;
+                    this.lastAccessedObject = invoker;
+                }
+                
+                if(this.pages.navButton.root._internalRoot !== null){
+                    this.pages.navButton.root.unmount();
+                }
             }
             this.BuildRoots();
         },
@@ -90,17 +94,22 @@ let PageManager = {
             this.pages.windowBox.root.unmount();
 
             this.isWindowShown = false
-            this.lastAccessedObject['focused'] = false;
-            this.lastAccessedObject = null;
+            
+            if (this.lastAccessedObject){
+                this.lastAccessedObject['focused'] = false;
+                this.lastAccessedObject = null;
+            }
 
-            this.UpdateSubScene(this.lastCamera);
+            if(this.activeCamera !== 0){
+                this.UpdateSubScene(this.lastCamera);
+            }
+
             this.BuildRoots();
         },
 
         UpdateSubScene(cameraIndex){
             this.pages.navButton.root.render(this.pages.navButton.page());
 
-            console.log(this.lastCamera);
             this.isCameraCenter = false;
             this.activeCamera = cameraIndex;
             CameraIndex.index = this.activeCamera;
@@ -114,6 +123,7 @@ let PageManager = {
         //For Upload
         CloseSubScene() {
             this.pages.navButton.root.unmount();
+            
             this.isCameraCenter = true;
             this.activeCamera = 0;
             CameraIndex.index = this.activeCamera;

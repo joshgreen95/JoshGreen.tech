@@ -1,3 +1,5 @@
+import { PageManager } from "../../React/Logic/PageManager.js";
+
 const defaultCamera = {
     position: {
         x: 1.681627725641144,
@@ -14,7 +16,7 @@ const defaultCamera = {
 const bathCamera = {
     position: {
         x: 13.71,
-        y: 9.35,
+        y: 7.35,
         z: 27.465
     },
     rotation: {

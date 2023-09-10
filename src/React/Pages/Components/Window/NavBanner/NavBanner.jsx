@@ -5,7 +5,7 @@ export default function NavBanner(props) {
   return (
     <div className='navBanner'>
         <h1>{`${props.windowName}`}</h1>
-        <CloseButton />
+        <CloseButton static={props.static}/>
     </div>
   )
 }

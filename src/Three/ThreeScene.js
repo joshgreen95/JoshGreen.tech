@@ -15,6 +15,7 @@ import skyFragmentShader from './shaders/Sky/fragment.glsl';
 import { LoadGLTFScene } from "./Props/ImportModel.js";
 import { InitializeCameraArray, UpdateCameraArray } from "./Camera/InitializeCameraArray.js";
 import { CameraIndex } from './Camera/CameraIndex.js'
+import { cameras } from "./Scene/CameraAngles.js";
 import { TimeOfDay } from "./Scene/DayNightCycle.js";
 import { SceneSetter } from "./Props/SceneSetter.js";
 
@@ -30,6 +31,7 @@ import DevilDuckTest from "../React/Pages/PortfolioContent/DevilDuckTest.jsx";
 import GimpDuckTest from "../React/Pages/PortfolioContent/GimpDuckTest.jsx";
 import { InitializeTags } from "./Logic/AssignTagsToScene.js";
 
+
 export default class ThreeScene extends Component{
     componentDidMount(){
 /**
@@ -44,19 +46,21 @@ export default class ThreeScene extends Component{
  */
         const canvas = document.getElementById('renderContainer').appendChild(renderer.domElement);
 
-/**
- * Camera
- */
-        const cameraArray = InitializeCameraArray(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-/**
- * Sizes
- */
         const sizes = {
             width: window.innerWidth,
             height: window.innerHeight
         };
 
+/**
+ * Camera
+ */
+        PageManager.isMobile = ((sizes.width / sizes.height) < 1);
+        if(PageManager.isMobile){ cameras[2].position.z = 1}    
+        const cameraArray = InitializeCameraArray(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+/**
+ * Sizes
+ */
         window.addEventListener('resize', () => {
             // Update sizes
             sizes.width = window.innerWidth;
@@ -109,7 +113,7 @@ export default class ThreeScene extends Component{
 /**
  * Debug Controls
  */
-        const controls = new OrbitControls(cameraArray[0], renderer.domElement);
+        //const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
  */
@@ -259,11 +263,9 @@ export default class ThreeScene extends Component{
  */
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
         const skyLight = new THREE.HemisphereLight(timeOfDay.skyColor, timeOfDay.groundColor, 0.4);
-        const lightHelper = new THREE.HemisphereLightHelper(skyLight, 3);
         ambientLight.position.y = 19;
-        scene.add(ambientLight, lightHelper, skyLight);
+        scene.add(ambientLight, skyLight);
 
-        scene.add(new THREE.AxesHelper(5));
 /**
  * Loop
  */

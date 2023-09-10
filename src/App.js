@@ -1,12 +1,14 @@
 import './App.css';
 import ThreeScene from './Three/ThreeScene.js';
 import LoadingScreen from './React/Pages/LoadingScreen.jsx';
+import { PageManager } from './React/Logic/PageManager.js';
 
+import Header from './React/Pages/Header.jsx';
 function App() {
   return (
     <>
       <LoadingScreen />
-      <>
+      <>        
         <div className='mobileNavMenuContainer' id='mobileNavMenuContainer'>
           {/*Mobile Nav Menu gets appended here through createRoot function */}
         </div>
@@ -16,12 +18,16 @@ function App() {
         </div>
       
         <div className='windowBoxContainer' id='windowBoxContainer'>
-          {/*Info box gets appended here through createRoot fuction*/}
+          {/*Writeup box gets appended here through createRoot fuction*/}
         </div>
         
-        <>
-          <ThreeScene />
-        </>
+        <div className='header' id='header'>
+          <Header />
+        </div>
+
+      <>
+        <ThreeScene />
+      </>
         
       </>
     </>
