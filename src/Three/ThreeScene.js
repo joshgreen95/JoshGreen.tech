@@ -13,6 +13,7 @@ import skyFragmentShader from './shaders/Sky/fragment.glsl';
 
 //Logic
 import { LoadGLTFScene } from "./Props/ImportModel.js";
+import { InitializeTags } from "./Logic/AssignTagsToScene.js";
 import { InitializeCameraArray, UpdateCameraArray } from "./Camera/InitializeCameraArray.js";
 import { CameraIndex } from './Camera/CameraIndex.js'
 import { cameras } from "./Scene/CameraAngles.js";
@@ -25,11 +26,12 @@ import { Floatable } from "./Props/Floatables/Floatable";
 //PageManger
 import { PageManager } from "../React/Logic/PageManager";
 
-//JSX Components
-import DuckTest from "../React/Pages/PortfolioContent/DuckTest";
-import DevilDuckTest from "../React/Pages/PortfolioContent/DevilDuckTest.jsx";
-import GimpDuckTest from "../React/Pages/PortfolioContent/GimpDuckTest.jsx";
-import { InitializeTags } from "./Logic/AssignTagsToScene.js";
+//Portfolio Pages
+import AboutMe from "../React/Pages/PortfolioContent/AboutMe.jsx"
+import Portfolio from "../React/Pages/PortfolioContent/Portfolio.jsx";
+import Wowdle from "../React/Pages/PortfolioContent/Wowdle.jsx";
+import DiscordBot from "../React/Pages/PortfolioContent/DiscordBot.jsx";
+import EcstasyState from "../React/Pages/PortfolioContent/EcstasyState.jsx";
 
 
 export default class ThreeScene extends Component{
@@ -39,7 +41,8 @@ export default class ThreeScene extends Component{
  */
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.enabled = false;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 /**
  * Canvas
@@ -102,13 +105,20 @@ export default class ThreeScene extends Component{
  * Day/Night Cycle
  */
         const timeOfDay = new TimeOfDay();
-        console.log(timeOfDay);
 
 /**
  * Scene    
 */ 
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(timeOfDay.horizonColor);
+
+        const ambientPointLight = new THREE.PointLight(timeOfDay.groundColor, 10);
+        ambientPointLight.castShadow = true;
+        ambientPointLight.shadow.mapSize.width = 256;
+        ambientPointLight.shadow.mapSize.height = 256;
+        ambientPointLight.shadow.blurSamples = 25;
+        scene.add(ambientPointLight);
+        
         
 /**
  * Debug Controls
@@ -233,17 +243,18 @@ export default class ThreeScene extends Component{
 /**
  * Toilet Object
  */
-        const toiletFloatable = new Floatable('/models/Duck.glb', 0, 0.95, DuckTest, scene, null, true);
+        const toiletFloatable = new Floatable('/models/Duck.glb', 0, 0.95, AboutMe, scene, null, true);
         
 
 /**
 * Floatables
 */
-        const duck = new Floatable('/models/Duck.glb', 1, 0.5, DuckTest, scene, bathWater, false);
-        const devilDuck = new Floatable('/models/Devil_Duck.glb', 2, 0.5, DevilDuckTest, scene, bathWater, false);
-        const gimpDuck = new Floatable('/models/G_Duck.glb', 3, 0.5, GimpDuckTest, scene, bathWater, false);
+        const duck = new Floatable('/models/Duck.glb', 1, 0.5, Portfolio, scene, bathWater, false);
+        const duckWowdle = new Floatable('/models/Duck_Wowdle.glb', 2, 0.5, Wowdle, scene, bathWater, false);
+        const duckDiscordBot = new Floatable('/models/Duck_DiscordBot.glb', 3, 0.5, DiscordBot, scene, bathWater, false);
+        const duckEcstasyState = new Floatable('/models/Duck_EcstasyState.glb', 4, 0.5, EcstasyState, scene, bathWater, false);
 
-        const floatables = [toiletFloatable, duck, devilDuck, gimpDuck];
+        const floatables = [toiletFloatable, duck, duckWowdle, duckDiscordBot, duckEcstasyState];
 
 /**
  * Scene Setters

@@ -1,7 +1,7 @@
 import React from 'react';
 import NavBanner from '../Components/Window/NavBanner/NavBanner.jsx';
 
-export default function DevilDuckTest() {
+export default function Portfolio() {
   return (
     <div className='windowBox'>
         <NavBanner windowName='Demon Ducky'/>
