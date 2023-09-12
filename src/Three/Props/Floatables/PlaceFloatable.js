@@ -1,16 +1,17 @@
 function PlaceRandomly(model, waterMesh, positionsArray) {
     let validPlacement = false;
-    const validPlacementDistance = 5;
+    var validPlacementDistance = 10;
 
     const waterPosX = waterMesh.position.x;
     const waterPosZ = waterMesh.position.z;
     const waterWidth = waterMesh.geometry.parameters.width;
     const waterHeight = waterMesh.geometry.parameters.height;
 
-    const boundaryOffset = 5;
+    const boundaryOffset = 6;
     const offsetWidth = waterWidth - boundaryOffset;
     const offsetHeight = waterHeight - boundaryOffset;
 
+    var tryCount = 0;
     while (!validPlacement) {
         let xPos = (((Math.random() * (offsetWidth)) - (offsetWidth / 2)) + waterPosX);
         let zPos = (((Math.random() * offsetHeight) - (offsetHeight / 2)) + waterPosZ);
@@ -33,7 +34,17 @@ function PlaceRandomly(model, waterMesh, positionsArray) {
                 validPlacement = true;
             }
         }
+
+
+        if(tryCount >= 5){
+            validPlacementDistance -= 0.3;
+            tryCount = 0;
+        }
+
+        tryCount++;
     }
+
+
     positionsArray.push(model.position);
 
     const rotationalFactor = Math.PI * 0.5;

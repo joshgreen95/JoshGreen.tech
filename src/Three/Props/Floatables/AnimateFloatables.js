@@ -4,7 +4,7 @@ var count = 0;
 
 function AnimateFloatable(floatable, bathWaterMesh) {
     if (!floatable) { return; }
-    
+
     const amplitude = bathWaterMesh.material.uniforms.uWaveAmplitude.value;
     const dampening = bathWaterMesh.material.uniforms.uWaveDampening.value;
     const frequency = bathWaterMesh.material.uniforms.uWaveFrequency.value;

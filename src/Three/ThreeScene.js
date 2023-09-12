@@ -43,6 +43,8 @@ export default class ThreeScene extends Component{
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = false;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.gammaOutput = false;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
 /**
  * Canvas
@@ -112,18 +114,22 @@ export default class ThreeScene extends Component{
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(timeOfDay.horizonColor);
 
-        const ambientPointLight = new THREE.PointLight(timeOfDay.groundColor, 10);
+        const ambientPointLight = new THREE.PointLight(timeOfDay.groundColor, 0.5);
+        const pointLightHelper = new THREE.PointLightHelper(ambientPointLight);
+
+        ambientPointLight.position.set(0, 15, 5);
         ambientPointLight.castShadow = true;
         ambientPointLight.shadow.mapSize.width = 256;
         ambientPointLight.shadow.mapSize.height = 256;
         ambientPointLight.shadow.blurSamples = 25;
+
         scene.add(ambientPointLight);
         
         
 /**
  * Debug Controls
  */
-        //const controls = new OrbitControls(cameraArray[0], renderer.domElement);
+        const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
  */
@@ -236,7 +242,8 @@ export default class ThreeScene extends Component{
 
         const backgroundGradient = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
         InitializeTags(backgroundGradient);
-        backgroundGradient.position.set(0, 15, -35);
+        backgroundGradient.scale.set(3, 1.6, 1);
+        backgroundGradient.position.set(0, 12, -20);
         
         scene.add(bathWater, backgroundGradient);
 
@@ -272,7 +279,7 @@ export default class ThreeScene extends Component{
 /**
  * Lights
  */
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
         const skyLight = new THREE.HemisphereLight(timeOfDay.skyColor, timeOfDay.groundColor, 0.4);
         ambientLight.position.y = 19;
         scene.add(ambientLight, skyLight);

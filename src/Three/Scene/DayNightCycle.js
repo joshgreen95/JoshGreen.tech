@@ -2,7 +2,8 @@ import { DayNightGradients } from "./DayNightGradients.js";
 
 class TimeOfDay{
     constructor(){
-        this.hour = new Date().getHours();
+        this.hour = 15;
+        //this.hour = new Date().getHours();
         this.lastUpdated = new Date().getTime();
         this.isNight = this.hour < 8 || this.hour > 21;
         this.dayNightGradients = DayNightGradients;
