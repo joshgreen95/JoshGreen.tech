@@ -129,7 +129,7 @@ export default class ThreeScene extends Component{
 /**
  * Debug Controls
  */
-        const controls = new OrbitControls(cameraArray[0], renderer.domElement);
+        //const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
  */
