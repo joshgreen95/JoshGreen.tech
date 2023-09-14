@@ -60,7 +60,7 @@ export default class ThreeScene extends Component{
  * Camera
  */
         PageManager.isMobile = ((sizes.width / sizes.height) < 1);
-        if(PageManager.isMobile){ cameras[2].position.z = 1}    
+        if(PageManager.isMobile){ cameras[2].position.z = 12.2}    
         const cameraArray = InitializeCameraArray(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 /**
@@ -129,7 +129,7 @@ export default class ThreeScene extends Component{
 /**
  * Debug Controls
  */
-        //const controls = new OrbitControls(cameraArray[0], renderer.domElement);
+        const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
  */
@@ -250,7 +250,7 @@ export default class ThreeScene extends Component{
 /**
  * Toilet Object
  */
-        const toiletFloatable = new Floatable('/models/Duck.glb', 0, 0.95, AboutMe, scene, null, true);
+        const duckMe = new Floatable('/models/Duck_Me.glb', 0, 1, AboutMe, scene, null, true);
         
 
 /**
@@ -261,13 +261,13 @@ export default class ThreeScene extends Component{
         const duckDiscordBot = new Floatable('/models/Duck_DiscordBot.glb', 3, 0.5, DiscordBot, scene, bathWater, false);
         const duckEcstasyState = new Floatable('/models/Duck_EcstasyState.glb', 4, 0.5, EcstasyState, scene, bathWater, false);
 
-        const floatables = [toiletFloatable, duck, duckWowdle, duckDiscordBot, duckEcstasyState];
+        const floatables = [duckMe, duck, duckWowdle, duckDiscordBot, duckEcstasyState];
 
 /**
  * Scene Setters
  */
         const bathSceneSetter = new SceneSetter(new THREE.Vector3(15, 12, 40), new THREE.Vector3(12.5, -5, 10), scene, 1, 0);
-        const toiletSceneSetter = new SceneSetter(new THREE.Vector3(15, 15, 15), new THREE.Vector3(-10, -1, 1), scene, 2, 1);
+        const toiletSceneSetter = new SceneSetter(new THREE.Vector3(15, 15, 15), new THREE.Vector3(-10, -1, 12.5), scene, 2, 1);
 
         const sceneSetters = [bathSceneSetter, toiletSceneSetter];
 
@@ -289,6 +289,9 @@ export default class ThreeScene extends Component{
  */
 //Place counter to stop Time  update every frame
         function Tick() {
+            
+            console.log(cameraArray[CameraIndex.index]);
+            
             requestAnimationFrame(Tick);
                         
             timeOfDay.UpdateHour();

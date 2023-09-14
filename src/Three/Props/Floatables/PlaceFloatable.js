@@ -52,9 +52,9 @@ function PlaceRandomly(model, waterMesh, positionsArray) {
 }
 
 function PlaceToiletFloatable(model){
-    model.position.x = -12.7;
-    model.position.y = -4.6;
-    model.position.z = 1.1;
+    model.position.x = -15.3;
+    model.position.y = -2.5;
+    model.position.z = 12.2;
 
     model.rotation.y = 0.5 * 3.14;
 }
