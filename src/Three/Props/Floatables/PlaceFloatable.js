@@ -57,6 +57,7 @@ function PlaceToiletFloatable(model){
     model.position.z = 12.2;
 
     model.rotation.y = 0.5 * 3.14;
+    model.receiveShadow = true;
 }
 
 export { PlaceRandomly, PlaceToiletFloatable };

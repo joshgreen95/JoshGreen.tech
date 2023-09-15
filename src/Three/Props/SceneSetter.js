@@ -16,7 +16,6 @@ class SceneSetter{
         AssignTagToScene(this.hitboxMesh, 'sceneSetterIndex', this.sceneSetterIndex);
 
         scene.add(this.hitboxMesh);
-        console.log(this.hitboxMesh);
     }
 
     Focus(){

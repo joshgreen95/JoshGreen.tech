@@ -1,4 +1,4 @@
-*{
+* {
   font-family: sans-serif;
 }
 
@@ -6,35 +6,35 @@ body {
   margin: 0;
 }
 
-button{
+button {
   height: 100px;
   width: 200px;
 }
 
-canvas{
+canvas {
   overflow: hidden;
 }
 
-.navButtonContainer{
+.navButtonContainer {
   position: fixed;
   z-index: 1;
 }
 
-.backButton{
+.backButton {
   margin-top: 3vh;
   margin-left: 3vw;
 
   color: #E3CEFF;
 }
 
-.fixedButton{
+.fixedButton {
   margin-right: 3vw;
   margin-top: 3vh;
 
   color: #DFF1FF;
 }
 
-.header{
+.header {
   position: absolute;
   top: 0;
   right: 0;
@@ -42,16 +42,16 @@ canvas{
   z-index: 2;
 }
 
-.windowBoxContainer{
+.windowBoxContainer {
   height: 85vh;
   width: 50vw;
   position: fixed;
   margin: 7.5vh 0vh 15vw 7.5vh;
-  
+
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  
+
   background-color: transparent;
   z-index: 1;
 
@@ -59,7 +59,7 @@ canvas{
 }
 
 /* Content Windows */
-.windowBox{
+.windowBox {
   height: 100%;
   width: 100%;
 
@@ -69,7 +69,7 @@ canvas{
 }
 
 
-.navBanner{
+.navBanner {
   height: 3vh;
   margin: 0.3vh;
 
@@ -81,14 +81,14 @@ canvas{
 }
 
 
-.navBanner h1{
+.navBanner h1 {
   width: 48vw;
   margin-left: 0.5vw;
 
   font-size: 18px;
   text-align: left;
   flex-direction: row;
-  color:#4F8AB8;
+  color: #4F8AB8;
 }
 
 .navBanner button {
@@ -97,7 +97,7 @@ canvas{
 
   margin-right: 0.2%;
   padding: 0%;
-  
+
   text-align: center;
 
   background-color: #F5FBFF;
@@ -110,7 +110,7 @@ canvas{
 
 
 /*Content*/
-.contentBox{
+.contentBox {
   height: 80vh;
   margin: 5px;
 
@@ -120,10 +120,10 @@ canvas{
   overflow-y: scroll;
   overflow-x: hidden;
 
-  
+
 }
 
-.contentBox img{
+.contentBox img {
   margin: 0;
   height: 50vh;
   width: 50vw;
@@ -135,7 +135,7 @@ canvas{
 }
 
 /*Loading Screen*/
-#loadingScreen{
+#loadingScreen {
   position: fixed;
   z-index: 99;
   top: 0;
@@ -147,9 +147,9 @@ canvas{
 
   transition: opacity 1s ease-in-out;
   opacity: 1;
-  }
-  
-#loadingScreen.hidden{
+}
+
+#loadingScreen.hidden {
   opacity: 0;
 }
 
@@ -183,7 +183,7 @@ canvas{
   z-index: 0;
 }
 
-.loadingText h1{
+.loadingText h1 {
   position: absolute;
   text-align: left;
   top: 60%;
@@ -191,8 +191,8 @@ canvas{
   color: white;
 }
 
-.loadingText h1:after{
-overflow: hidden;
+.loadingText h1:after {
+  overflow: hidden;
   display: inline-block;
   vertical-align: bottom;
   -webkit-animation: ellipsis steps(4, end) 900ms infinite;
@@ -200,7 +200,7 @@ overflow: hidden;
   content: "\2026";
   /* ascii code for the ellipsis character */
   width: 0px;
-  }
+}
 
 
 @keyframes ellipsis {
@@ -311,57 +311,58 @@ overflow: hidden;
 
 /*MOBILE*/
 @media only screen and (max-width: 768px) {
+
   html,
-    body {
-      overflow-x: hidden;
-    }
-  
-    body {
-      position: relative;
-    }
-  
-  #loader{
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    position: relative;
+  }
+
+  #loader {
     top: 40%;
     left: 43%;
   }
-  
-    .loadingText h1{
-      margin-top: 5vh;
-      left: 35%;
-    }
+
+  .loadingText h1 {
+    margin-top: 5vh;
+    left: 35%;
+  }
 
   .header {
-      position: fixed;
-      left: 5vw;
-      top: 72.5vh;
-      width: 100%;
+    position: fixed;
+    left: 5vw;
+    top: 72.5vh;
+    width: 100%;
 
-      display: flex;
-      
-      justify-content: space-around;
+    display: flex;
 
-      z-index: 2;
-    }
-  
+    justify-content: space-around;
+
+    z-index: 2;
+  }
+
   .backButton {
-      font-size: 7vh;
-    }
-  
+    font-size: 7vh;
+  }
+
   .fixedButton {
     font-size: 7vh;
     margin-right: 10vw;
 
   }
-  
-  .mobileNavMenuContainer{
+
+  .mobileNavMenuContainer {
     background-color: transparent;
     position: absolute;
-  
+
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
-   
+
     height: 50%;
     width: 100%;
     margin-top: 15vh;
@@ -374,12 +375,12 @@ overflow: hidden;
     font-size: 34px;
     color: #4F8AB8;
     font-weight: bold;
-    
+
     height: 8vh;
     width: 80vw;
 
     background: linear-gradient(35deg, #E3CEFF 50%, #DFF1FF 100%);
-    
+
     border: 4px outset #F5FBFF;
     border-radius: 5%;
 
@@ -395,8 +396,8 @@ overflow: hidden;
 
     z-index: 3;
   }
-    
-/* Content Windows */
+
+  /* Content Windows */
   .windowBox {
     height: 84vh;
     width: 100%;
@@ -405,6 +406,7 @@ overflow: hidden;
     border: 3px outset #F5FBFF;
     pointer-events: all;
   }
+
   .navBanner {
     height: 5vh;
     margin: 0.3vh;
@@ -416,25 +418,25 @@ overflow: hidden;
   }
 
   .navBanner button {
-  height: 4.5vh;
-  width: 4.5vh;
-  margin-right: 0.5vw;
+    height: 4.5vh;
+    width: 4.5vh;
+    margin-right: 0.5vw;
 
-  font-size: 20px;
-  font-weight: bold;
+    font-size: 20px;
+    font-weight: bold;
   }
 
   .navBanner h1 {
     width: 48vw;
     margin-left: 0.5vw;
     margin-right: 35vw;
-    
+
   }
 
   /*Content*/
   .contentBox {
     font-size: 16px;
-    
+
     height: 76vh;
     margin: 5px;
 
@@ -443,6 +445,7 @@ overflow: hidden;
     overflow-y: scroll;
     overflow-x: hidden;
   }
+
   .contentBox h1 {
     margin: 0;
   }

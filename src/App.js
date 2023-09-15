@@ -1,7 +1,5 @@
-import './App.css';
 import ThreeScene from './Three/ThreeScene.js';
 import LoadingScreen from './React/Pages/LoadingScreen.jsx';
-import { PageManager } from './React/Logic/PageManager.js';
 
 import Header from './React/Pages/Header.jsx';
 function App() {

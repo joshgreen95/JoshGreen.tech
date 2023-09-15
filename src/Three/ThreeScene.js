@@ -80,7 +80,6 @@ export default class ThreeScene extends Component{
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             // Mobile Mode
             PageManager.isMobile = ((sizes.width / sizes.height) < 1);
-            console.log(PageManager.isMobile);
         })
 
 /**
@@ -129,7 +128,7 @@ export default class ThreeScene extends Component{
 /**
  * Debug Controls
  */
-        const controls = new OrbitControls(cameraArray[0], renderer.domElement);
+        //const controls = new OrbitControls(cameraArray[0], renderer.domElement);
 /**
  * Raycaster
  */
@@ -289,9 +288,6 @@ export default class ThreeScene extends Component{
  */
 //Place counter to stop Time  update every frame
         function Tick() {
-            
-            console.log(cameraArray[CameraIndex.index]);
-            
             requestAnimationFrame(Tick);
                         
             timeOfDay.UpdateHour();

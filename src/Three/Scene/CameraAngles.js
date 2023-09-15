@@ -30,7 +30,7 @@ const toiletCamera = {
     position: {
         x: -5.5,
         y: 1.35,
-        z: 15.2
+        z: 12.2
     },
     rotation: {
         x: -1.63,

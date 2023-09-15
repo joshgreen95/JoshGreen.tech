@@ -45,7 +45,6 @@ let PageManager = {
             this.pages.mobileNavMenu.root = createRoot(this.pages.mobileNavMenu.container);
             this.pages.windowBox.root = createRoot(this.pages.windowBox.container);
 
-            console.log(this.isMobile);
             if(this.isMobile){
                 this.pages.mobileNavMenu.root.render(this.pages.mobileNavMenu.page());
             }
