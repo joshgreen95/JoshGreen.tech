@@ -120,20 +120,58 @@ canvas {
   overflow-y: scroll;
   overflow-x: hidden;
 
+  font-size: large;
+}
+
+.contentBox .imageContainer{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 33%;
 
 }
 
 .contentBox img {
-  margin: 0;
-  height: 50vh;
-  width: 50vw;
+  align-items: center;
+  margin-left: 20%;
+  width: 60%;
+  overflow: scroll;
   object-fit: contain;
+}
+
+.contentBox i {
+  font-weight: bold;
 }
 
 .contentBox h1 {
   margin: 0;
+  margin-bottom: 1vh;
 }
 
+.contentBox h2{
+  margin-left: 1.5vw;
+  margin-bottom: 1vh;
+}
+
+.contentBox h3 {
+  margin-left: 1.5vw;
+  margin-bottom: 0.1vh;
+}
+
+.contentBox p{
+  margin-left: 3vw;
+  margin-right: 3vw;
+}
+
+.contentBox li{
+  margin-left: 1.5vw;
+  margin-right: 1.5vw;
+  margin-bottom: 1vh;
+}
+
+.contentBox a {
+  text-align: center;
+}
 /*Loading Screen*/
 #loadingScreen {
   position: fixed;

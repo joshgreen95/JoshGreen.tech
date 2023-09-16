@@ -175,7 +175,7 @@ export default class ThreeScene extends Component{
                         timeSinceLastMove = clock.getElapsedTime(); }
                         
                 if(collision.object.tags['sceneSetter']){
-                    const sceneSetter = sceneSetters[collision.object.tags['sceneSetterIndex']]
+                    const sceneSetter = sceneSetters[collision.object.tags['sceneSetterIndex']];
                     sceneSetter.Focus();
                 }
             }
@@ -266,9 +266,13 @@ export default class ThreeScene extends Component{
  * Scene Setters
  */
         const bathSceneSetter = new SceneSetter(new THREE.Vector3(15, 12, 40), new THREE.Vector3(12.5, -5, 10), scene, 1, 0);
-        const toiletSceneSetter = new SceneSetter(new THREE.Vector3(15, 15, 15), new THREE.Vector3(-10, -1, 12.5), scene, 2, 1);
+        const bathSignSceneSetter = new SceneSetter(new THREE.Vector3(1, 10, 10), new THREE.Vector3(18.5, 8, 12.5), scene, 1, 1);
 
-        const sceneSetters = [bathSceneSetter, toiletSceneSetter];
+        const toiletSceneSetter = new SceneSetter(new THREE.Vector3(10, 15, 10), new THREE.Vector3(-15, -1, 12.5), scene, 2, 2);
+        const toiletSignSceneSetter = new SceneSetter(new THREE.Vector3(1, 8, 8), new THREE.Vector3(-20.5, 8, 12.5), scene, 2, 3);
+
+        const sceneSetters = [bathSceneSetter, bathSignSceneSetter, toiletSceneSetter, toiletSignSceneSetter];
+        sceneSetters.forEach((scene) => { console.log(scene)});
 
 /**
 * Clock
