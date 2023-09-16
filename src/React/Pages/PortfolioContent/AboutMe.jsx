@@ -30,6 +30,7 @@ export default function Portfolio() {
         <h3>What's on the Horizon?</h3>
         <p>My eyes are set on some pretty ambitious goals. I plan to dive back into academia part-time for a Computer Science degree. The immediate aim? Land a front-end role with the aim of moving into devops further down the road.</p>
 
+        <h3>Looking Back</h3>
         <p>
           I've been honing my people skills in the hospitality industry for a decade, two years of which I’ve spent in management. Trust me, it’s a crash course in multitasking and effective communication.
         </p>
@@ -38,9 +39,8 @@ export default function Portfolio() {
           I've been coding for quite a while now but for most of the time, I’ve been unguided and just kind of winging it. I started out by making Racing Gamemodes for 'Grand Theft Auto: SA Multiplayer' using a typeless C sublanguage called 'Pawn' and creating registry tools in Visual Basic to help people recover 'DayZ' accounts.
         </p>
 
-        <h3>In University</h3>
         <p>
-          I used Python and SQL to perform corpus linguistic analysis and quickly realised the thrill of fixing a difficult bug captivated me more than the rest of my university experience, so I decided to focus completely on programming as a career.
+          In University I used Python and SQL to perform corpus linguistic analysis and quickly realised the thrill of fixing a difficult bug captivated me more than the rest of my university experience, so I decided to change my heading and focus on programming as a career.
         </p>
 
         <h3>My Coding Milestones</h3>
@@ -60,7 +60,7 @@ export default function Portfolio() {
           Once I’ve closed all my Stack Overflow tabs, you'll find me:
         </p>
         <ul>
-          <li>I'm a big fan of metal music and I'm always at concerts.</li>
+          <li>Always at Concerts, I'm a big fan of metal music.</li>
           <li>Competing in Gamejams, I've been getting a lot more joy from making games than playing them recently.</li>
           <li>Running a weekly DnD game.</li>
           <li>Building Custom Keyboards.</li>
