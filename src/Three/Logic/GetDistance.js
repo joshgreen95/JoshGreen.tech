@@ -1,10 +1,16 @@
+/**
+ * Calculates the 2d distance between 2 Three.Vector3 using their x and z positions
+ * @param {*} pos1 
+ * @param {*} pos2
+ */
+
+
 function GetDistance(pos1, pos2) {
     if (typeof pos1 == 'number' && typeof pos2 == 'number') {
         console.log(pos1, pos2);
         return pos2 - pos1;
     }
 
-    //This is bad programming
     let xSquared, zSquared = 0;
     let xDifference, zDifference = 0;
 

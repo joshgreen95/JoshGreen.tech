@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageManager } from '../../../../Logic/PageManager';
+import { PageManager } from '../../../../Logic/PageManager.js';
 
 export default function CloseButton(props) {
   return (

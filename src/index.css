@@ -172,6 +172,7 @@ canvas {
 .contentBox a {
   font-weight: bold;
   margin-left: 3vw;
+  margin-top: 2vh;
 }
 
 .contentBox #email{
@@ -207,9 +208,6 @@ canvas {
   margin-bottom: 1vh;
 }
 
-.contentBox a {
-  text-align: center;
-}
 /*Loading Screen*/
 #loadingScreen {
   position: fixed;

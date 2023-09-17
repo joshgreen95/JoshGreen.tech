@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBanner from '../Pages/Components/Window/NavBanner/NavBanner.jsx'
+
 export default function InfoScreen() {
   return (
     <div className='windowBox'>

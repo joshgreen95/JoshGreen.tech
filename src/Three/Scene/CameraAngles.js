@@ -1,5 +1,3 @@
-import { PageManager } from "../../React/Logic/PageManager.js";
-
 const defaultCamera = {
     position: {
         x: 1.681627725641144,
@@ -40,6 +38,5 @@ const toiletCamera = {
 };
 
 const cameras = [defaultCamera, bathCamera, toiletCamera]
-
 
 export { cameras };

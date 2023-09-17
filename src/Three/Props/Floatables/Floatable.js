@@ -1,9 +1,13 @@
+//Core
 import * as THREE from 'three';
+// Prop Logic
 import { LoadGLTFScene } from "../ImportModel";
 import { AnimateFloatable } from "./AnimateFloatables";
 import { PlaceRandomly, PlaceToiletFloatable } from "./PlaceFloatable";
+import { AssignTagToScene } from '../../Logic/AssignTagsToScene';
+// Camera Logic
 import { AddCamera, GetCameraIndex } from '../../Camera/InitializeCameraArray';
-import { AssignTagToScene, InitializeTags } from '../../Logic/AssignTagsToScene';
+// Page Logic
 import { PageManager } from '../../../React/Logic/PageManager';
 
 const floatablePositions = [];
@@ -17,7 +21,8 @@ class Floatable {
         this.scene = scene;
         this.waterMesh = waterMesh;
         this.model = LoadGLTFScene(this.scene, this.modelRef, this.Instantiate, this);
-        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
+        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 2.5, 1000);
         this.cameraIndex = null;
         this.isStatic = isStatic;
         this.cameraDistance = 5;
@@ -45,9 +50,7 @@ class Floatable {
             self.camera.position.x = self.model.position.x + (self.cameraDistance * (Math.sin(self.model.rotation.y)));
             self.camera.position.z = self.model.position.z + (self.cameraDistance * (Math.cos(self.model.rotation.y)));
 
-            //I dont know why this works but it works
             self.camera.rotation.y += centeringAngle;
-            
             
             AddCamera(self.camera);
             
@@ -56,8 +59,7 @@ class Floatable {
     }
 
     Place() {
-        //If Index 0 then toilet duck FIX this as only allows one clickable object. Deffo need to extenuate this function to a clickable class
-        //too lazy tonight, should add clock or something. 
+        //If isStatic then toilet duck. Need to extenuate this function to a clickable class.
         if(this.isStatic){
             PlaceToiletFloatable(this.model);
         }

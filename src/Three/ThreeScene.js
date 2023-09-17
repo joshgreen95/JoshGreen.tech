@@ -32,6 +32,7 @@ import Portfolio from "../React/Pages/PortfolioContent/Portfolio.jsx";
 import Wowdle from "../React/Pages/PortfolioContent/Wowdle.jsx";
 import DiscordBot from "../React/Pages/PortfolioContent/DiscordBot.jsx";
 import EcstasyState from "../React/Pages/PortfolioContent/EcstasyState.jsx";
+import Knightmare from "../React/Pages/PortfolioContent/Knightmare.jsx";
 
 
 export default class ThreeScene extends Component{
@@ -59,8 +60,7 @@ export default class ThreeScene extends Component{
 /**
  * Camera
  */
-        PageManager.isMobile = ((sizes.width / sizes.height) < 1);
-        if(PageManager.isMobile){ cameras[2].position.z = 12.2}    
+        PageManager.isMobile = ((sizes.width / sizes.height) < 1);  
         const cameraArray = InitializeCameraArray(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 /**
@@ -114,8 +114,6 @@ export default class ThreeScene extends Component{
         scene.background = new THREE.Color(timeOfDay.horizonColor);
 
         const ambientPointLight = new THREE.PointLight(timeOfDay.groundColor, 0.5);
-        const pointLightHelper = new THREE.PointLightHelper(ambientPointLight);
-
         ambientPointLight.position.set(0, 15, 5);
         ambientPointLight.castShadow = true;
         ambientPointLight.shadow.mapSize.width = 256;
@@ -123,12 +121,59 @@ export default class ThreeScene extends Component{
         ambientPointLight.shadow.blurSamples = 25;
 
         scene.add(ambientPointLight);
-        
-        
+
+
+
+/**
+ * Sounds
+ */
+        // const listener = new THREE.AudioListener();
+        // const quack = new THREE.Audio(listener);
+        // const splash = new THREE.Audio(listener);
+
+        // const quackLoader = new THREE.AudioLoader();
+        // quackLoader.load('sounds/quack.mp3', function( buffer ) {
+        //     quack.setBuffer(buffer);
+        //     quack.setLoop(false);
+        //     quack.setVolume(0.3);
+        // });
+
+        // const splashLoader = new THREE.AudioLoader();
+        // splashLoader.load('sounds/splash.mp3', function (buffer) {
+        //     splash.setBuffer(buffer);
+        //     splash.setLoop(false);
+        //     splash.setVolume(0.3);
+        // });
+
+        // function generateDetune(){
+        //     const octave = 300;
+        //     const detune = (2 * octave * Math.random()) - octave;
+
+        //     console.log(detune);
+        //     return detune;
+        // }
+         
+        // function Quack(){
+        //      if (!PageManager.isMuted){
+        //         quack.stop();
+        //         quack.detune = generateDetune();
+        //         quack.play();
+        //      }
+        //  }
+
+        // function Splash(){
+        //     if(!PageManager.isMuted){
+        //         splash.stop();
+        //         splash.play();
+        //     }
+        //  }
+
+        //I dont like sound but its here if I want to add it back.
 /**
  * Debug Controls
  */
         //const controls = new OrbitControls(cameraArray[0], renderer.domElement);
+
 /**
  * Raycaster
  */
@@ -156,13 +201,13 @@ export default class ThreeScene extends Component{
                 if(!collision.object.tags){ return; }
 
                 //Disables sceneSetter Collision when focused.
-                //TODO REFINE
                 if(!PageManager.isCameraCenter && (collision.object.tags['sceneSetter'] || collision.object.tags['ignore'])){
                     collision = intersects[1];
                 }
 
                 //DisplayWindow
                 if(collision.object.tags['floatable'] ){
+
                     if(!PageManager.isWindowShown){
                         const floatable = floatables[collision.object.tags['floatableIndex']];
                         floatable.Focus();
@@ -170,6 +215,8 @@ export default class ThreeScene extends Component{
                 }
 
                 if (collision.object.tags['needsUVCoords']) {
+                    console.log(collision.object);
+
                         collision.object.material.uniforms.uRaycastIntersect.value = collision.uv;
                         collision.object.material.uniforms.uRaycastIntersectWorld.value = new THREE.Vector3(collision.point.x, 0, collision.point.z);
                         timeSinceLastMove = clock.getElapsedTime(); }
@@ -190,6 +237,7 @@ export default class ThreeScene extends Component{
 * */
         const bathWaterGeometry = new THREE.PlaneGeometry(12, 25, 100, 100);
         const backgroundGeometry = new THREE.PlaneGeometry(100, 35, 5, 5);
+
 /**
 * Materials
 */
@@ -251,7 +299,6 @@ export default class ThreeScene extends Component{
  */
         const duckMe = new Floatable('/models/Duck_Me.glb', 0, 1, AboutMe, scene, null, true);
         
-
 /**
 * Floatables
 */
@@ -259,8 +306,9 @@ export default class ThreeScene extends Component{
         const duckWowdle = new Floatable('/models/Duck_Wowdle.glb', 2, 0.5, Wowdle, scene, bathWater, false);
         const duckDiscordBot = new Floatable('/models/Duck_DiscordBot.glb', 3, 0.5, DiscordBot, scene, bathWater, false);
         const duckEcstasyState = new Floatable('/models/Duck_EcstasyState.glb', 4, 0.5, EcstasyState, scene, bathWater, false);
+        const duckKnightmare = new Floatable('/models/Duck_Knightmare.glb', 5, 0.5, Knightmare, scene, bathWater, false);
 
-        const floatables = [duckMe, duck, duckWowdle, duckDiscordBot, duckEcstasyState];
+        const floatables = [duckMe, duck, duckWowdle, duckDiscordBot, duckEcstasyState, duckKnightmare];
 
 /**
  * Scene Setters
@@ -272,7 +320,6 @@ export default class ThreeScene extends Component{
         const toiletSignSceneSetter = new SceneSetter(new THREE.Vector3(1, 8, 8), new THREE.Vector3(-20.5, 8, 12.5), scene, 2, 3);
 
         const sceneSetters = [bathSceneSetter, bathSignSceneSetter, toiletSceneSetter, toiletSignSceneSetter];
-        sceneSetters.forEach((scene) => { console.log(scene)});
 
 /**
 * Clock
@@ -290,7 +337,6 @@ export default class ThreeScene extends Component{
 /**
  * Loop
  */
-//Place counter to stop Time  update every frame
         function Tick() {
             requestAnimationFrame(Tick);
                         
@@ -332,4 +378,3 @@ export default class ThreeScene extends Component{
         );
     }
 }
-

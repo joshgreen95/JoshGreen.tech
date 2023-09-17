@@ -82,7 +82,6 @@ export default function Portfolio() {
 
         <p>For any work related enquiries, <a id='email' href="mailto:me@joshgreen.tech">Send me an email!</a></p>
         
-
         </div>
       </div>
   )

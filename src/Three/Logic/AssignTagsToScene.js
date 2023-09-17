@@ -1,7 +1,7 @@
 import { tags } from "../Props/Tags.js";
 
 /**
- * Initializes tags on scene group
+ * Initializes tags from 'Tags.js' on scene 
  * @param {*} scene 
  */
 

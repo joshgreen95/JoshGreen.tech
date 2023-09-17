@@ -1,3 +1,12 @@
+/**
+ * Randomly places floatable based on bath water meshes size and rotates them randomly.
+ * Function keeps track of distance between all floatables and corrects so ducks are not inside eachother.
+ * 
+ * @param {model} floatable 
+ * @param {THREE.Mesh} waterMesh
+ * @param {Array} positionsArray
+ */
+
 function PlaceRandomly(model, waterMesh, positionsArray) {
     let validPlacement = false;
     var validPlacementDistance = 10;
@@ -7,7 +16,7 @@ function PlaceRandomly(model, waterMesh, positionsArray) {
     const waterWidth = waterMesh.geometry.parameters.width;
     const waterHeight = waterMesh.geometry.parameters.height;
 
-    const boundaryOffset = 6;
+    const boundaryOffset = 5;
     const offsetWidth = waterWidth - boundaryOffset;
     const offsetHeight = waterHeight - boundaryOffset;
 
@@ -35,7 +44,6 @@ function PlaceRandomly(model, waterMesh, positionsArray) {
             }
         }
 
-
         if(tryCount >= 5){
             validPlacementDistance -= 0.3;
             tryCount = 0;
@@ -43,7 +51,6 @@ function PlaceRandomly(model, waterMesh, positionsArray) {
 
         tryCount++;
     }
-
 
     positionsArray.push(model.position);
 

@@ -1,6 +1,9 @@
+//Core
 import { createRoot } from 'react-dom/client';
+// Camera Logic
 import { CameraIndex } from "../../Three/Camera/CameraIndex";
 import { UpdateCameraArray } from '../../Three/Camera/InitializeCameraArray.js';
+//JSX Components
 import NavButton from "../Pages/Components/Window/NavBanner/NavButton.jsx";
 import MobileNavMenu from "../Pages/MobileNavMenu.jsx";
 
@@ -13,6 +16,8 @@ let PageManager = {
         isCameraCenter: true,
         
         isMobile: null,
+
+        isMuted: false,
 
         pages: {
             navButton: {
@@ -133,6 +138,10 @@ let PageManager = {
 
             this.BuildRoots();
     },
+
+        ToggleMute(){
+            this.isMuted = !this.isMuted;
+        }
 
 }
 

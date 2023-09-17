@@ -1,5 +1,14 @@
 import { GetDistance } from "../../Logic/GetDistance";
 import * as THREE from 'three';
+
+/**
+ * Animates floatables with a copy of the logic stored in bathwater vertex shader
+ * @param {Floatable} floatable 
+ * @param {THREE.Mesh} bathWaterMesh
+ */
+
+
+
 var count = 0;
 
 function AnimateFloatable(floatable, bathWaterMesh) {
@@ -21,7 +30,6 @@ function AnimateFloatable(floatable, bathWaterMesh) {
 
     let squareDistance = Math.pow(distanceFromIntersect.x, 2) + Math.pow(distanceFromIntersect.y, 2);
     let scaledSquareDistance = squareDistance * waveScale;
-
     
     let height = 1 - adjustedAmplitude * (Math.cos(scaledSquareDistance + elapsedTime * frequency) * Math.exp(-dampening * scaledSquareDistance));
     floatable.position.y = bathWaterMesh.position.y + height;
