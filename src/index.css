@@ -1,5 +1,5 @@
 * {
-  font-family: sans-serif;
+  font-family: 'Rubik', sans-serif;
 }
 
 body {
@@ -85,6 +85,7 @@ canvas {
   width: 48vw;
   margin-left: 0.5vw;
 
+  font-family: sans-serif;
   font-size: 18px;
   text-align: left;
   flex-direction: row;
@@ -114,7 +115,7 @@ canvas {
   height: 80vh;
   margin: 5px;
 
-  background: #FFFFFF;
+  background: #F5FBFF;
   border: 2px inset #FFFFFF;
 
   overflow-y: scroll;
@@ -123,37 +124,74 @@ canvas {
   font-size: large;
 }
 
-.contentBox .imageContainer{
+.imgContainer {
   display: flex;
-  justify-content: space-around;
+  align-content: center;
   align-items: center;
-  border-radius: 33%;
-
+  justify-content: center;
+  flex-direction: column;
 }
 
-.contentBox img {
-  align-items: center;
-  margin-left: 20%;
-  width: 60%;
-  overflow: scroll;
-  object-fit: contain;
+.imgContainer img{
+    margin-top: 3vh;
+    margin-bottom: 0.5vh;
+    height: 30%;
+    width: 30%;
+  
+    box-shadow:
+        -50px -50px 0 -40px #E3CEFF,
+        50px 50px 0 -40px #E3CEFF;
 }
+.imgContainer img {
+  margin-top: 3vh;
+  margin-bottom: 0.5vh;
+  height: 30%;
+  width: 30%;
+
+  box-shadow:
+    -50px -50px 0 -40px #E3CEFF,
+    50px 50px 0 -40px #E3CEFF;
+}
+
+.imgContainer .imgHorizontal{
+      width: 90%;
+}
+
+.imgContainer h4{
+  color: #4b515f;  
+  font-size: small;
+  text-align: center;
+  margin-top: 1vh;
+}
+
 
 .contentBox i {
   font-weight: bold;
 }
 
+.contentBox a {
+  font-weight: bold;
+  margin-left: 3vw;
+}
+
+.contentBox #email{
+  margin-left: 0;
+}
+
 .contentBox h1 {
+  color: #222222;
   margin: 0;
   margin-bottom: 1vh;
 }
 
 .contentBox h2{
+  color: #872199;
   margin-left: 1.5vw;
   margin-bottom: 1vh;
 }
 
 .contentBox h3 {
+  color: #9c27b0;
   margin-left: 1.5vw;
   margin-bottom: 0.1vh;
 }
