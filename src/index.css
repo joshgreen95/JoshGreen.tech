@@ -42,6 +42,17 @@ canvas {
   z-index: 2;
 }
 
+.header h9{
+  position: absolute;
+  font-size: small;
+  margin-left: 0.75vw;
+  margin-top: 5.6vh;
+  
+  color: #DFF1FF;
+
+  pointer-events: none;
+}
+
 .windowBoxContainer {
   height: 85vh;
   width: 50vw;
@@ -426,6 +437,11 @@ canvas {
     font-size: 7vh;
     margin-right: 10vw;
 
+  }
+
+  .header h9{
+    position: absolute;
+    margin-right: 86vw;
   }
 
   .mobileNavMenuContainer {
