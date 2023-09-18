@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBanner from '../Components/Window/NavBanner/NavBanner.jsx';
+import wowdlePic from './images/Wowdle.png';
 
 export default function Wowdle() {
   return (
@@ -10,7 +11,7 @@ export default function Wowdle() {
           <h2>Wowdle - The Game of Guessing Azeroth's NPCs</h2>
           
           <div className='imgContainer'>
-            <img className='imgHorizontal' src='/images/wowdle.png' />
+            <img className='imgHorizontal' src={wowdlePic} />
           </div>
           
           <ul>

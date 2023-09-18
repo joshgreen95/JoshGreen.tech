@@ -525,9 +525,12 @@ canvas {
   }
 
   .contentBox img {
-    margin: 0;
     height: 40vh;
-    width: 90vw;
+    width: auto;
     object-fit: contain;
+  }
+
+  .contentBox .imgHorizontal{
+    height: auto;
   }
 }

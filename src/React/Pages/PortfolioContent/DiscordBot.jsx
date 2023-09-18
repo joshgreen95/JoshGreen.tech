@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBanner from '../Components/Window/NavBanner/NavBanner.jsx';
+import alanPic from './images/alan.jpg'
 
 export default function DiscordBot() {
   return (
@@ -11,7 +12,7 @@ export default function DiscordBot() {
           <h2>ALAN - The Discord Bot That's Never Happy</h2>
 
           <div className='imgContainer'>
-            <img className='imgHorizontal' src='/images/alan.jpg' />
+            <img className='imgHorizontal' src={alanPic} />
           </div>
 
           <h3>Overview</h3>

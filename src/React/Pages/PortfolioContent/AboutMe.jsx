@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBanner from '../Components/Window/NavBanner/NavBanner.jsx';
+import mePic from './images/me.jpg';
 
 export default function Portfolio() {
   return (
@@ -8,7 +9,7 @@ export default function Portfolio() {
         <div className='contentBox'>
         
         <div className='imgContainer'>
-          <img src='/images/me.jpg' />
+          <img src={mePic} />
           <h4>This is me (the man not the monkey). </h4>
         </div>
         

@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBanner from '../Components/Window/NavBanner/NavBanner.jsx';
+import portfolioPic from './images/Portfolio.png';
 
 export default function Portfolio() {
   return (
@@ -10,7 +11,7 @@ export default function Portfolio() {
           <h2>My Portfolio - A 3D Adventure with THREE.js</h2>
 
           <div className='imgContainer'>
-            <img className='imgHorizontal' src='/images/portfolio.png' />
+            <img className='imgHorizontal' src={portfolioPic} />
           </div>
           
           <a href="https://github.com/joshgreen95/JoshGreen.tech" target="_blank">GitHub Repo</a>
