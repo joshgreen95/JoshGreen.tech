@@ -21,16 +21,16 @@ export default function Portfolio() {
 
         <h3>My Tech Stack</h3>
         <ul>
-          <li>Javascript; React, Threejs, Nodejs, Mocha. <i>Wizardly +++ </i></li>
-          <li>C#, Unity Engine        <i>Wizardly +++ </i></li>
-          <li>Git       <i>Wizardly +++</i></li>
-          <li>AWS, Firebase     <i>Wizardly +++</i></li>
-          <li>Webpack     <i>Wizardly +++</i></li>
-          <li>SQL       <i>Codeprentice ++ </i></li>
-          <li>C++, Unreal Engine       <i>Codeprentice ++ </i></li>
-          <li>Blender, Autodesk Maya       <i>Codeprentice ++ </i></li>
-          <li>Figma       <i>Codeprentice ++ </i></li>
-          <li>Java      <i>Jester +</i></li>
+          <li>Javascript; React, Threejs, Nodejs, Mocha. &emsp;<i>Wizardly +++ </i></li>
+          <li>C#, Unity Engine        &emsp;<i>Wizardly +++ </i></li>
+          <li>Git       &emsp;<i>Wizardly +++</i></li>
+          <li>AWS, Firebase     &emsp;<i>Wizardly +++</i></li>
+          <li>Webpack     &emsp;<i>Wizardly +++</i></li>
+          <li>SQL       &emsp;<i>Codeprentice ++ </i></li>
+          <li>C++, Unreal Engine       &emsp;<i>Codeprentice ++ </i></li>
+          <li>Blender, Autodesk Maya       &emsp;<i>Codeprentice ++ </i></li>
+          <li>Figma       &emsp;<i>Codeprentice ++ </i></li>
+          <li>Java      &emsp;<i>Jester +</i></li>
 
         </ul>
 
